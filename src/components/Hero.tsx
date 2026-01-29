@@ -91,14 +91,13 @@ export default function Hero() {
                 Ver Productos
                 <span className="inline-block ml-1 group-hover:translate-x-1 transition-transform">→</span>
               </Link>
-              <button
-                type="button"
-                onClick={scrollToContact}
+              <a
+                href="#servicios"
                 className="group px-7 py-3 bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-white rounded-full font-bold text-base md:text-lg shadow-lg hover:from-gold-600 hover:to-gold-400 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 animate-pulse focus:outline-none focus:ring-4 focus:ring-gold-300/40"
               >
                 <span className="drop-shadow-lg">Agendar Cita Ahora</span>
                 <span className="inline-block ml-1 group-hover:translate-x-1 transition-transform text-xl">→</span>
-              </button>
+              </a>
             </div>
           </div>
         </div>
