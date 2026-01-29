@@ -1,27 +1,44 @@
 "use client";
 import { useCallback } from "react";
+import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
-import { Particles } from "@tsparticles/react";
+import type { Container, Engine } from "@tsparticles/engine";
+import { useEffect, useState } from "react";
 
 export default function GoldParticles() {
-  // Configuración de partículas doradas
-  const particlesInit = useCallback(async (engine: any) => {
-    await loadSlim(engine);
+  const [init, setInit] = useState(false);
+
+  useEffect(() => {
+    initParticlesEngine(async (engine: Engine) => {
+      await loadSlim(engine);
+    }).then(() => {
+      setInit(true);
+    });
   }, []);
+
+  const particlesLoaded = async (container?: Container): Promise<void> => {
+    console.log(container);
+  };
+
+  if (!init) {
+    return null;
+  }
 
   return (
     <Particles
       id="gold-particles"
-      init={particlesInit}
+      particlesLoaded={particlesLoaded}
       className="absolute inset-0 -z-10"
       options={{
         fullScreen: { enable: false },
         background: { color: "transparent" },
-        fpsLimit: 30,
+        fpsLimit: 60,
         particles: {
           number: {
             value: 70,
-            density: { enable: true },
+            density: {
+              enable: true,
+            },
           },
           color: {
             value: ["#FFD700", "#D4AF37", "#fff8dc"],
@@ -31,30 +48,19 @@ export default function GoldParticles() {
           },
           opacity: {
             value: { min: 0.6, max: 1 },
-            animation: {
-              enable: true,
-              speed: 0.2,
-              sync: false,
-            },
           },
           size: {
             value: { min: 1.5, max: 3.5 },
-            animation: {
-              enable: true,
-              speed: 0.15,
-              sync: false,
-            },
           },
           move: {
             enable: true,
-            speed: 0.10,
+            speed: 0.1,
             direction: "none",
             random: true,
             straight: false,
-            outModes: { default: "out" },
-          },
-          links: {
-            enable: false,
+            outModes: {
+              default: "out",
+            },
           },
         },
         interactivity: {
@@ -63,20 +69,12 @@ export default function GoldParticles() {
               enable: true,
               mode: "bubble",
             },
-            resize: {
-              enable: true,
-            },
           },
           modes: {
             bubble: {
               distance: 100,
-              duration: 0.7,
               size: 4,
-              opacity: 1,
-            },
-            repulse: {
-              distance: 70,
-              duration: 0.5,
+              duration: 0.7,
             },
           },
         },
