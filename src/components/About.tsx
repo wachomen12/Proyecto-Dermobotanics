@@ -73,7 +73,7 @@ export default function About() {
             {/* Floating Stats - Hidden on mobile */}
             <div className="hidden md:block absolute -bottom-8 -right-8 bg-white rounded-2xl shadow-xl p-6 border border-[#2d5a3d]/10">
               <div className="text-center">
-                <p className="text-3xl font-bold text-[#2d5a3d]">3</p>
+                <p className="text-3xl font-bold text-[#2d5a3d]">4</p>
                 <p className="text-sm text-[#5a5a5a]">Marcas Premium</p>
               </div>
             </div>
