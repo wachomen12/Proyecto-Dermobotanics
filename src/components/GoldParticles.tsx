@@ -63,7 +63,9 @@ export default function GoldParticles() {
               enable: true,
               mode: "bubble",
             },
-            resize: true,
+            resize: {
+              enable: true,
+            },
           },
           modes: {
             bubble: {
