@@ -5,7 +5,7 @@ import { Particles } from "@tsparticles/react";
 
 export default function GoldParticles() {
   // Configuración de partículas doradas
-  const particlesInit = useCallback(async (engine) => {
+  const particlesInit = useCallback(async (engine: any) => {
     await loadSlim(engine);
   }, []);
 
