@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 
-type Service = {
+export type Service = {
   id?: string;
   icon?: string;
   image?: string;
@@ -127,7 +127,7 @@ export default function Services() {
                 {/* Content */}
                 <div className="relative z-10">
                   <h3 className="text-2xl md:text-3xl font-extrabold text-[#b8954d] mb-2 tracking-tight drop-shadow-sm">
-                    {service.title || service.name}
+                    {service.title}
                   </h3>
                   <div className="h-1 w-10 bg-gradient-to-r from-[#d4b886] to-[#c9a962] rounded-full mb-4"></div>
                   <p className="text-base md:text-lg text-[#3a3a3a] mb-8 leading-relaxed min-h-[80px] font-light">
@@ -139,7 +139,7 @@ export default function Services() {
                       {service.price}
                     </span>
                     <button
-                      onClick={() => handleReservar(service.title || service.name)}
+                      onClick={() => handleReservar(service.title)}
                       className="px-6 py-2 bg-gradient-to-r from-[#d4b886] to-[#c9a962] text-white font-semibold rounded-full shadow-md hover:from-[#c9a962] hover:to-[#b8954d] transition-all duration-300 flex items-center gap-2 group/btn text-lg"
                     >
                       Reservar

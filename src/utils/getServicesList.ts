@@ -5,7 +5,7 @@ export async function getServicesList(): Promise<string[]> {
     const res = await fetch("/api/services");
     if (!res.ok) return [];
     const data: Service[] = await res.json();
-    return data.map(s => s.name || s.title || "").filter(Boolean);
+    return data.map(s => s.title || "").filter(Boolean);
   } catch {
     return [];
   }
