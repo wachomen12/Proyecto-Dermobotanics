@@ -19,10 +19,10 @@ export default function GoldParticles() {
         background: { color: "transparent" },
         fpsLimit: 30,
         particles: {
-          number: {
-            value: 70,
-            density: { enable: true, value_area: 1000 },
-          },
+            number: {
+              value: 70,
+              density: { enable: true },
+            },
           color: {
             value: ["#FFD700", "#D4AF37", "#fff8dc"],
           },
