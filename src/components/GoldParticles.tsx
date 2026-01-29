@@ -21,7 +21,7 @@ export default function GoldParticles() {
         particles: {
           number: {
             value: 70,
-            density: { enable: true, area: 1000 },
+            density: { enable: true, size: 1000 },
           },
           color: {
             value: ["#FFD700", "#D4AF37", "#fff8dc"],
