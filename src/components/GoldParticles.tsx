@@ -19,10 +19,10 @@ export default function GoldParticles() {
         background: { color: "transparent" },
         fpsLimit: 30,
         particles: {
-            number: {
-              value: 70,
-              density: { enable: true },
-            },
+          number: {
+            value: 70,
+            density: { enable: true },
+          },
           color: {
             value: ["#FFD700", "#D4AF37", "#fff8dc"],
           },
@@ -34,7 +34,6 @@ export default function GoldParticles() {
             animation: {
               enable: true,
               speed: 0.2,
-              minimumValue: 0.6,
               sync: false,
             },
           },
@@ -43,7 +42,6 @@ export default function GoldParticles() {
             animation: {
               enable: true,
               speed: 0.15,
-              minimumValue: 1.5,
               sync: false,
             },
           },
