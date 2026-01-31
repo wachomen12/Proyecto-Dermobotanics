@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Lock, LogOut, Key, Package, Edit2, Trash2, Save, X, Plus, Image as LucideImage, DollarSign, Tag, Layers, User, Eye, EyeOff, Sparkles, Star } from "lucide-react";
+import { Lock, LogOut, Key, Package, Edit2, Trash2, Save, X, Plus, Image as LucideImage, DollarSign, Tag, Layers, User, Eye, EyeOff, Sparkles, Star, ArrowUp, ArrowDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { uploadToCloudinary } from "@/utils/uploadToCloudinary";
@@ -51,6 +51,7 @@ export default function AdminPanel() {
     marca: marcas[0],
     categoria: categorias[0],
     image: null as File | null,
+    promo: false,
   });
   const [products, setProducts] = useState<Array<{ id?: string; name: string; description: string; price: string; marca: string; categoria: string; image: string | null }>>([]);
   const [editIndex, setEditIndex] = useState<number | null>(null);
@@ -409,6 +410,7 @@ export default function AdminPanel() {
           marca: product.marca,
           categoria: product.categoria,
           image: imgSrc,
+          promo: product.promo,
         }),
       });
       
@@ -417,7 +419,7 @@ export default function AdminPanel() {
       const newProduct = await res.json();
       setProducts([...products, newProduct]);
       showNotification("✨ Producto agregado correctamente", "success");
-      setProduct({ name: "", description: "", price: "", marca: marcas[0], categoria: categorias[0], image: null });
+      setProduct({ name: "", description: "", price: "", marca: marcas[0], categoria: categorias[0], image: null, promo: false });
       setPreview(null);
       setEditIndex(null);
     } catch (err: any) {
@@ -435,6 +437,7 @@ export default function AdminPanel() {
       marca: prod.marca,
       categoria: prod.categoria,
       image: null,
+      promo: prod.promo || false,
     });
     setPreview(prod.image);
     setEditIndex(index);
@@ -461,7 +464,7 @@ export default function AdminPanel() {
         showNotification("Producto eliminado correctamente", "success");
         
         if (editIndex === index) {
-          setProduct({ name: "", description: "", price: "", marca: marcas[0], categoria: categorias[0], image: null });
+          setProduct({ name: "", description: "", price: "", marca: marcas[0], categoria: categorias[0], image: null, promo: false });
           setPreview(null);
           setEditIndex(null);
         }
@@ -470,6 +473,71 @@ export default function AdminPanel() {
       }
       setLoading(false);
     }
+  };
+
+  // Función para mover producto hacia arriba
+  const moveProductUp = async (index: number) => {
+    if (index === 0) return; // Ya está al principio
+    
+    setLoading(true);
+    const newProducts = [...products];
+    // Intercambiar posiciones
+    [newProducts[index - 1], newProducts[index]] = [newProducts[index], newProducts[index - 1]];
+    
+    try {
+      // Actualizar orden en la base de datos
+      const updates = [
+        { id: newProducts[index].id, orden: index + 1 },
+        { id: newProducts[index - 1].id, orden: index }
+      ];
+      
+      const response = await fetch('/api/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ updates })
+      });
+
+      if (!response.ok) throw new Error('Error al actualizar');
+      
+      setProducts(newProducts);
+      showNotification("✅ Orden actualizado", "success");
+    } catch (error) {
+      showNotification("❌ Error al actualizar orden", "error");
+      console.error(error);
+    }
+    setLoading(false);
+  };
+
+  // Función para mover producto hacia abajo
+  const moveProductDown = async (index: number) => {
+    if (index === products.length - 1) return; // Ya está al final
+    
+    setLoading(true);
+    const newProducts = [...products];
+    // Intercambiar posiciones
+    [newProducts[index], newProducts[index + 1]] = [newProducts[index + 1], newProducts[index]];
+    
+    try {
+      const updates = [
+        { id: newProducts[index].id, orden: index + 1 },
+        { id: newProducts[index + 1].id, orden: index + 2 }
+      ];
+      
+      const response = await fetch('/api/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ updates })
+      });
+
+      if (!response.ok) throw new Error('Error al actualizar');
+      
+      setProducts(newProducts);
+      showNotification("✅ Orden actualizado", "success");
+    } catch (error) {
+      showNotification("❌ Error al actualizar orden", "error");
+      console.error(error);
+    }
+    setLoading(false);
   };
 
   const handleSavePass = async (e: React.FormEvent) => {
@@ -1001,63 +1069,50 @@ export default function AdminPanel() {
                 </div>
               </div>
               
-              {services.length === 0 ? (
-                <div className="text-center py-16">
+              {products.length === 0 ? (
+                <div className="text-center py-12">
                   <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Sparkles className="w-10 h-10 text-slate-400" />
+                    <Package className="w-10 h-10 text-slate-400" />
                   </div>
-                  <p className="text-slate-600 font-medium text-lg">No hay servicios aún</p>
-                  <p className="text-slate-500 text-sm mt-1">Agrega tu primer servicio usando el formulario de arriba</p>
+                  <p className="text-slate-600 font-medium">No hay productos agregados aún</p>
+                  <p className="text-slate-500 text-sm mt-1">Comienza agregando tu primer producto arriba</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {services.map((srv, idx) => (
-                    <div key={idx} className="group bg-gradient-to-br from-slate-50 to-white rounded-xl border-2 border-slate-200 overflow-hidden hover:shadow-xl hover:border-amber-300 transition-all">
-                      {/* Imagen/Emoji */}
-                      {(srv.image || srv.icon) && (
-                        <div className="relative h-40 bg-gradient-to-br from-amber-50 to-slate-100 flex items-center justify-center overflow-hidden">
-                          {srv.image ? (
-                            <Image src={srv.image} alt={srv.name || srv.title} width={160} height={160} className="w-24 h-24 object-cover rounded-2xl shadow-lg" />
-                          ) : (
-                            <span className="text-6xl" title="Emoji">{srv.icon}</span>
-                          )}
-                          {/* Badges */}
-                          <div className="absolute top-2 right-2 flex gap-1">
-                            {srv.popular && (
-                              <span className="px-2 py-1 bg-amber-500 text-white text-xs font-bold rounded-full shadow-md">⭐ Popular</span>
-                            )}
-                            {srv.promo && (
-                              <span className="px-2 py-1 bg-pink-500 text-white text-xs font-bold rounded-full shadow-md">🎁 Promo</span>
-                            )}
-                          </div>
+                  {[...products].sort((a, b) => (a.orden || 0) - (b.orden || 0)).map((prod, idx) => (
+                    <div key={idx} className="group bg-slate-50 rounded-xl border border-slate-200 overflow-hidden hover:shadow-lg transition-all relative">
+                      {prod.image && (
+                        <div className="relative h-48 bg-slate-200 overflow-hidden">
+                          <Image src={prod.image} alt={prod.name} width={400} height={192} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                         </div>
                       )}
-                      
                       <div className="p-5">
-                        <h3 className="font-bold text-slate-800 text-lg mb-2 line-clamp-1">{srv.name || srv.title}</h3>
-                        <p className="text-slate-600 text-sm mb-3 line-clamp-2 min-h-[40px]">{srv.description || "Sin descripción"}</p>
-                        
-                        <div className="flex items-center justify-between mb-4">
-                          <span className="text-2xl font-bold text-amber-600">
-                            {srv.price?.toString().startsWith('$') ? srv.price : `$${srv.price}`}
-                          </span>
-                          {srv.duration && (
-                            <span className="px-3 py-1 bg-amber-100 text-amber-700 rounded-full font-medium text-xs">
-                              ⏱️ {srv.duration}
-                            </span>
+                        {/* Badges */}
+                        <div className="absolute top-2 right-2 flex gap-1">
+                          {prod.popular && (
+                            <span className="px-2 py-1 bg-amber-500 text-white text-xs font-bold rounded-full shadow-md">⭐ Popular</span>
+                          )}
+                          {prod.promo && (
+                            <span className="px-2 py-1 bg-pink-500 text-white text-xs font-bold rounded-full shadow-md">🎁 Promo</span>
                           )}
                         </div>
-                        
+                        <h3 className="font-bold text-slate-800 text-lg mb-2 line-clamp-1">{prod.name}</h3>
+                        <p className="text-slate-600 text-sm mb-3 line-clamp-2 min-h-[40px]">{prod.description || "Sin descripción"}</p>
+                        <div className="flex items-center justify-between mb-4">
+                          <span className="text-2xl font-bold text-amber-600">
+                            {prod.price?.toString().startsWith('$') ? prod.price : `$${prod.price}`}
+                          </span>
+                        </div>
                         <div className="flex gap-2">
                           <button
-                            onClick={() => handleEditService(idx)}
+                            onClick={() => handleEdit(idx)}
                             className="flex-1 px-3 py-2 bg-amber-50 hover:bg-amber-100 text-amber-700 rounded-lg font-medium transition-all flex items-center justify-center gap-2 border border-amber-200 text-sm"
                           >
                             <Edit2 className="w-4 h-4" />
                             Editar
                           </button>
                           <button
-                            onClick={() => handleDeleteService(idx)}
+                            onClick={() => handleDelete(idx)}
                             className="flex-1 px-3 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg font-medium transition-all flex items-center justify-center gap-2 border border-red-200 text-sm"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -1241,6 +1296,23 @@ export default function AdminPanel() {
                       </div>
                     )}
                   </div>
+
+                  {/* Checkbox Promoción */}
+                  <div className="md:col-span-2">
+                    <div className="flex items-center gap-3 p-4 bg-pink-50 rounded-xl border-2 border-pink-200 hover:border-pink-300 transition-colors">
+                      <input
+                        type="checkbox"
+                        id="promo-product"
+                        checked={product.promo}
+                        onChange={e => setProduct({ ...product, promo: e.target.checked })}
+                        className="accent-pink-500 w-5 h-5 rounded cursor-pointer"
+                      />
+                      <label htmlFor="promo-product" className="text-sm text-slate-700 font-semibold cursor-pointer flex-1 flex items-center gap-2">
+                        🎁 <strong className="text-pink-600">Producto en Promoción</strong> 
+                        <span className="text-slate-600 font-normal">(se mostrará con insignia especial)</span>
+                      </label>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Botones */}
@@ -1262,7 +1334,7 @@ export default function AdminPanel() {
                     <button
                       type="button"
                       onClick={() => {
-                        setProduct({ name: "", description: "", price: "", marca: marcas[0], categoria: categorias[0], image: null });
+                        setProduct({ name: "", description: "", price: "", marca: marcas[0], categoria: categorias[0], image: null, promo: false });
                         setPreview(null);
                         setEditIndex(null);
                       }}
@@ -1299,7 +1371,44 @@ export default function AdminPanel() {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {products.map((prod, idx) => (
-                    <div key={idx} className="group bg-gradient-to-br from-slate-50 to-white rounded-xl border-2 border-slate-200 overflow-hidden hover:shadow-xl hover:border-emerald-300 transition-all">
+                    <div key={idx} className="group relative bg-gradient-to-br from-slate-50 to-white rounded-xl border-2 border-slate-200 overflow-hidden hover:shadow-xl hover:border-emerald-300 transition-all">
+                      
+                      {/* Badge de posición */}
+                      <div className="absolute top-3 left-3 z-10">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 text-white font-bold flex items-center justify-center text-sm shadow-xl border-2 border-white">
+                          #{idx + 1}
+                        </div>
+                      </div>
+
+                      {/* Botones de ordenamiento */}
+                      <div className="absolute top-3 right-3 z-10 flex flex-col gap-2">
+                        <button
+                          onClick={() => moveProductUp(idx)}
+                          disabled={idx === 0 || loading}
+                          className={`p-2.5 rounded-xl bg-white/95 backdrop-blur-sm shadow-xl transition-all border-2 ${
+                            idx === 0 
+                              ? 'opacity-30 cursor-not-allowed border-slate-200' 
+                              : 'hover:bg-emerald-500 hover:text-white hover:scale-110 hover:shadow-2xl border-emerald-200 hover:border-emerald-400'
+                          }`}
+                          title="Subir posición"
+                        >
+                          <ArrowUp className="w-5 h-5" strokeWidth={3} />
+                        </button>
+                        
+                        <button
+                          onClick={() => moveProductDown(idx)}
+                          disabled={idx === products.length - 1 || loading}
+                          className={`p-2.5 rounded-xl bg-white/95 backdrop-blur-sm shadow-xl transition-all border-2 ${
+                            idx === products.length - 1
+                              ? 'opacity-30 cursor-not-allowed border-slate-200'
+                              : 'hover:bg-emerald-500 hover:text-white hover:scale-110 hover:shadow-2xl border-emerald-200 hover:border-emerald-400'
+                          }`}
+                          title="Bajar posición"
+                        >
+                          <ArrowDown className="w-5 h-5" strokeWidth={3} />
+                        </button>
+                      </div>
+
                       {prod.image && (
                         <div className="relative h-48 bg-gradient-to-br from-emerald-50 to-slate-100 overflow-hidden">
                           <Image src={prod.image} alt={prod.name} width={400} height={192} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
@@ -1317,6 +1426,11 @@ export default function AdminPanel() {
                           <div className="flex items-center gap-2 text-xs flex-wrap">
                             <span className="px-3 py-1 bg-amber-100 text-amber-700 rounded-full font-medium">{prod.marca}</span>
                             <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full font-medium">{prod.categoria}</span>
+                            {prod.promo && (
+                              <span className="px-3 py-1 bg-pink-100 text-pink-700 rounded-full font-medium flex items-center gap-1">
+                                🎁 Promoción
+                              </span>
+                            )}
                           </div>
                         </div>
                         

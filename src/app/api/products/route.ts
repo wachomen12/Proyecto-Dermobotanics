@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { addProduct, getAllProducts, deleteProduct } from "@/utils/productsFirestore";
+import { addProduct, getAllProducts, deleteProduct, reorderProducts } from "@/utils/productsFirestore";
 
 export async function GET() {
   const products = await getAllProducts();
@@ -8,6 +8,24 @@ export async function GET() {
 
 export async function POST(req: Request) {
   const data = await req.json();
+  // Si el body contiene 'updates', es una petición de reordenamiento
+  if (data.updates) {
+    try {
+      const products = await reorderProducts(data.updates);
+      return NextResponse.json({
+        success: true,
+        message: 'Orden actualizado correctamente',
+        products
+      });
+    } catch (error) {
+      console.error('Error al reordenar productos:', error);
+      return NextResponse.json(
+        { success: false, message: 'Error al actualizar el orden' },
+        { status: 500 }
+      );
+    }
+  }
+  // Si no, es un alta normal de producto
   const newProduct = await addProduct(data);
   return NextResponse.json(newProduct, { status: 201 });
 }

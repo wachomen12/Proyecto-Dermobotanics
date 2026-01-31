@@ -16,3 +16,16 @@ export async function getAllProducts() {
 export async function deleteProduct(id: string) {
   await deleteDoc(doc(db, PRODUCTS_COLLECTION, id));
 }
+
+// Reordena productos actualizando el campo 'orden' en Firestore
+import { writeBatch } from "firebase/firestore";
+export async function reorderProducts(updates: { id: string; orden: number }[]) {
+  const batch = writeBatch(db);
+  updates.forEach(update => {
+    const productRef = doc(db, PRODUCTS_COLLECTION, update.id);
+    batch.update(productRef, { orden: update.orden });
+  });
+  await batch.commit();
+  // Retornar productos actualizados
+  return await getAllProducts();
+}
