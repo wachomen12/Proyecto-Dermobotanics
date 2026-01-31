@@ -1,3 +1,4 @@
+# Commit de control: redeploy forzado a Vercel 2026-01-31
 # Proyecto de Rosa
 
 Este es un proyecto de [Next.js](https://nextjs.org) creado con React y TypeScript.
