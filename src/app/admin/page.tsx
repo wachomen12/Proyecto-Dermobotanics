@@ -53,7 +53,7 @@ export default function AdminPanel() {
     image: null as File | null,
     promo: false,
   });
-  const [products, setProducts] = useState<Array<{ id?: string; name: string; description: string; price: string; marca: string; categoria: string; image: string | null }>>([]);
+  const [products, setProducts] = useState<Array<{ id?: string; name: string; description: string; price: string; marca: string; categoria: string; image: string | null; promo?: boolean }>>([]);
   const [editIndex, setEditIndex] = useState<number | null>(null);
 
   // Cargar credenciales
