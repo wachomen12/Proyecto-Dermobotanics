@@ -1,3 +1,8 @@
+// ⚠️ ARCHIVO CORREGIDO - 3 CAMBIOS PRINCIPALES:
+// 1. Línea ~1072: products.length cambiado a services.length
+// 2. Líneas ~538-580: /api/products cambiado a /api/products/reorder
+// 3. Añadido manejo correcto del endpoint de reordenamiento
+
 "use client";
 import { useState, useEffect } from "react";
 import { Lock, LogOut, Key, Package, Edit2, Trash2, Save, X, Plus, Image as LucideImage, DollarSign, Tag, Layers, User, Eye, EyeOff, Sparkles, Star, ArrowUp, ArrowDown } from "lucide-react";
@@ -53,7 +58,7 @@ export default function AdminPanel() {
     image: null as File | null,
     promo: false,
   });
-  const [products, setProducts] = useState<Array<{ id?: string; name: string; description: string; price: string; marca: string; categoria: string; image: string | null; promo?: boolean }>>([]);
+  const [products, setProducts] = useState<Array<{ id?: string; name: string; description: string; price: string; marca: string; categoria: string; image: string | null; promo?: boolean; orden?: number }>>([]);
   const [editIndex, setEditIndex] = useState<number | null>(null);
 
   // Cargar credenciales
@@ -69,7 +74,11 @@ export default function AdminPanel() {
     if (isAuth) {
       fetch("/api/products")
         .then(res => res.json())
-        .then(data => setProducts(data))
+        .then(data => {
+          // Ordenar por campo 'orden' si existe
+          const sortedProducts = data.sort((a: any, b: any) => (a.orden || 0) - (b.orden || 0));
+          setProducts(sortedProducts);
+        })
         .catch(() => setProducts([]));
     }
   }, [isAuth]);
@@ -411,13 +420,17 @@ export default function AdminPanel() {
           categoria: product.categoria,
           image: imgSrc,
           promo: product.promo,
+          orden: products.length + 1, // Nuevo producto al final
         }),
       });
       
       if (!res.ok) throw new Error("Error al guardar producto");
       
-      const newProduct = await res.json();
-      setProducts([...products, newProduct]);
+      // Recargar productos
+      const updated = await fetch("/api/products").then(r => r.json());
+      const sortedProducts = updated.sort((a: any, b: any) => (a.orden || 0) - (b.orden || 0));
+      setProducts(sortedProducts);
+      
       showNotification("✨ Producto agregado correctamente", "success");
       setProduct({ name: "", description: "", price: "", marca: marcas[0], categoria: categorias[0], image: null, promo: false });
       setPreview(null);
@@ -460,7 +473,8 @@ export default function AdminPanel() {
         if (!res.ok) throw new Error("Error al eliminar producto");
         
         const updated = await fetch("/api/products").then(r => r.json());
-        setProducts(updated);
+        const sortedProducts = updated.sort((a: any, b: any) => (a.orden || 0) - (b.orden || 0));
+        setProducts(sortedProducts);
         showNotification("Producto eliminado correctamente", "success");
         
         if (editIndex === index) {
@@ -475,7 +489,7 @@ export default function AdminPanel() {
     }
   };
 
-  // Función para mover producto hacia arriba
+  // ✅ CORREGIDO: Función para mover producto hacia arriba
   const moveProductUp = async (index: number) => {
     if (index === 0) return; // Ya está al principio
     
@@ -491,7 +505,8 @@ export default function AdminPanel() {
         { id: newProducts[index - 1].id, orden: index }
       ];
       
-      const response = await fetch('/api/products', {
+      // ⚠️ CAMBIO AQUÍ: /api/products/reorder en vez de /api/products
+      const response = await fetch('/api/products/reorder', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ updates })
@@ -508,7 +523,7 @@ export default function AdminPanel() {
     setLoading(false);
   };
 
-  // Función para mover producto hacia abajo
+  // ✅ CORREGIDO: Función para mover producto hacia abajo
   const moveProductDown = async (index: number) => {
     if (index === products.length - 1) return; // Ya está al final
     
@@ -523,7 +538,8 @@ export default function AdminPanel() {
         { id: newProducts[index + 1].id, orden: index + 2 }
       ];
       
-      const response = await fetch('/api/products', {
+      // ⚠️ CAMBIO AQUÍ: /api/products/reorder en vez de /api/products
+      const response = await fetch('/api/products/reorder', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ updates })
@@ -1057,7 +1073,7 @@ export default function AdminPanel() {
               </form>
             </div>
 
-            {/* Lista de Servicios */}
+            {/* ✅ CORREGIDO: Lista de Servicios - Cambio en línea 1072 */}
             <div className="bg-white rounded-2xl shadow-lg p-6 border border-slate-200">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center">
@@ -1069,50 +1085,64 @@ export default function AdminPanel() {
                 </div>
               </div>
               
-              {products.length === 0 ? (
-                <div className="text-center py-12">
+              {/* ⚠️ CAMBIO AQUÍ: services.length en vez de products.length */}
+              {services.length === 0 ? (
+                <div className="text-center py-16">
                   <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Package className="w-10 h-10 text-slate-400" />
+                    <Sparkles className="w-10 h-10 text-slate-400" />
                   </div>
-                  <p className="text-slate-600 font-medium">No hay productos agregados aún</p>
-                  <p className="text-slate-500 text-sm mt-1">Comienza agregando tu primer producto arriba</p>
+                  <p className="text-slate-600 font-medium text-lg">No hay servicios aún</p>
+                  <p className="text-slate-500 text-sm mt-1">Agrega tu primer servicio usando el formulario de arriba</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {[...products].sort((a, b) => (a.orden || 0) - (b.orden || 0)).map((prod, idx) => (
-                    <div key={idx} className="group bg-slate-50 rounded-xl border border-slate-200 overflow-hidden hover:shadow-lg transition-all relative">
-                      {prod.image && (
-                        <div className="relative h-48 bg-slate-200 overflow-hidden">
-                          <Image src={prod.image} alt={prod.name} width={400} height={192} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                  {services.map((srv, idx) => (
+                    <div key={idx} className="group bg-gradient-to-br from-slate-50 to-white rounded-xl border-2 border-slate-200 overflow-hidden hover:shadow-xl hover:border-amber-300 transition-all">
+                      {/* Imagen/Emoji */}
+                      {(srv.image || srv.icon) && (
+                        <div className="relative h-40 bg-gradient-to-br from-amber-50 to-slate-100 flex items-center justify-center overflow-hidden">
+                          {srv.image ? (
+                            <Image src={srv.image} alt={srv.name || srv.title} width={160} height={160} className="w-24 h-24 object-cover rounded-2xl shadow-lg" />
+                          ) : (
+                            <span className="text-6xl" title="Emoji">{srv.icon}</span>
+                          )}
+                          {/* Badges */}
+                          <div className="absolute top-2 right-2 flex gap-1">
+                            {srv.popular && (
+                              <span className="px-2 py-1 bg-amber-500 text-white text-xs font-bold rounded-full shadow-md">⭐ Popular</span>
+                            )}
+                            {srv.promo && (
+                              <span className="px-2 py-1 bg-pink-500 text-white text-xs font-bold rounded-full shadow-md">🎁 Promo</span>
+                            )}
+                          </div>
                         </div>
                       )}
+                      
                       <div className="p-5">
-                        {/* Badges */}
-                        <div className="absolute top-2 right-2 flex gap-1">
-                          {prod.popular && (
-                            <span className="px-2 py-1 bg-amber-500 text-white text-xs font-bold rounded-full shadow-md">⭐ Popular</span>
-                          )}
-                          {prod.promo && (
-                            <span className="px-2 py-1 bg-pink-500 text-white text-xs font-bold rounded-full shadow-md">🎁 Promo</span>
-                          )}
-                        </div>
-                        <h3 className="font-bold text-slate-800 text-lg mb-2 line-clamp-1">{prod.name}</h3>
-                        <p className="text-slate-600 text-sm mb-3 line-clamp-2 min-h-[40px]">{prod.description || "Sin descripción"}</p>
+                        <h3 className="font-bold text-slate-800 text-lg mb-2 line-clamp-1">{srv.name || srv.title}</h3>
+                        <p className="text-slate-600 text-sm mb-3 line-clamp-2 min-h-[40px]">{srv.description || "Sin descripción"}</p>
+                        
                         <div className="flex items-center justify-between mb-4">
                           <span className="text-2xl font-bold text-amber-600">
-                            {prod.price?.toString().startsWith('$') ? prod.price : `$${prod.price}`}
+                            {srv.price?.toString().startsWith('$') ? srv.price : `$${srv.price}`}
                           </span>
+                          {srv.duration && (
+                            <span className="px-3 py-1 bg-amber-100 text-amber-700 rounded-full font-medium text-xs">
+                              ⏱️ {srv.duration}
+                            </span>
+                          )}
                         </div>
+                        
                         <div className="flex gap-2">
                           <button
-                            onClick={() => handleEdit(idx)}
+                            onClick={() => handleEditService(idx)}
                             className="flex-1 px-3 py-2 bg-amber-50 hover:bg-amber-100 text-amber-700 rounded-lg font-medium transition-all flex items-center justify-center gap-2 border border-amber-200 text-sm"
                           >
                             <Edit2 className="w-4 h-4" />
                             Editar
                           </button>
                           <button
-                            onClick={() => handleDelete(idx)}
+                            onClick={() => handleDeleteService(idx)}
                             className="flex-1 px-3 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg font-medium transition-all flex items-center justify-center gap-2 border border-red-200 text-sm"
                           >
                             <Trash2 className="w-4 h-4" />
