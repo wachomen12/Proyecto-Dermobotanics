@@ -53,31 +53,31 @@ export default function EditarResultadoModal({ resultado, onClose, onSave }: {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-      <form onSubmit={handleSave} className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md flex flex-col gap-4 relative">
-        <button type="button" className="absolute top-2 right-2 text-slate-400 hover:text-slate-700 text-xl" onClick={onClose}>&times;</button>
-        <h3 className="text-lg font-bold text-[#b8954d] mb-2">Editar resultado</h3>
-        <div className="flex gap-4">
-          <div className="flex-1 flex flex-col items-center">
-            <label className="font-medium text-slate-700 mb-1">Antes</label>
-            <Image src={before} alt="Antes" width={100} height={100} className="rounded-lg object-cover mb-2" />
-            <input type="file" accept="image/*" onChange={handleBeforeChange} />
+      <form onSubmit={handleSave} className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-2xl flex flex-col gap-6 relative border border-gold-100">
+        <button type="button" className="absolute top-3 right-4 text-slate-400 hover:text-slate-700 text-2xl" onClick={onClose}>&times;</button>
+        <h3 className="text-2xl font-bold text-[#b8954d] mb-2 text-center">Editar resultado</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="flex flex-col items-center bg-gradient-to-br from-[#faf8f5] to-white rounded-xl p-4 shadow">
+            <label className="font-semibold text-slate-700 mb-2 text-lg">Antes</label>
+            <Image src={before} alt="Antes" width={120} height={120} className="rounded-xl object-cover mb-3 border border-gold-200 shadow" />
+            <input type="file" accept="image/*" onChange={handleBeforeChange} className="block w-full text-sm text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gold-50 file:text-gold-700 hover:file:bg-gold-100" />
           </div>
-          <div className="flex-1 flex flex-col items-center">
-            <label className="font-medium text-slate-700 mb-1">Después</label>
-            <Image src={after} alt="Después" width={100} height={100} className="rounded-lg object-cover mb-2" />
-            <input type="file" accept="image/*" onChange={handleAfterChange} />
+          <div className="flex flex-col items-center bg-gradient-to-br from-[#faf8f5] to-white rounded-xl p-4 shadow">
+            <label className="font-semibold text-slate-700 mb-2 text-lg">Después</label>
+            <Image src={after} alt="Después" width={120} height={120} className="rounded-xl object-cover mb-3 border border-gold-200 shadow" />
+            <input type="file" accept="image/*" onChange={handleAfterChange} className="block w-full text-sm text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gold-50 file:text-gold-700 hover:file:bg-gold-100" />
           </div>
         </div>
         <textarea
-          className="w-full border border-slate-300 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent text-slate-800 bg-white resize-none"
+          className="w-full border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent text-slate-800 bg-white resize-none text-base shadow"
           placeholder="Comentario del cliente (opcional)"
           value={message}
           onChange={e => setMessage(e.target.value)}
-          rows={2}
+          rows={3}
         />
         <button
           type="submit"
-          className="px-6 py-2 bg-gradient-to-r from-gold-600 to-gold-500 text-white rounded-full font-semibold shadow hover:from-gold-700 hover:to-gold-600 transition-all duration-300 disabled:opacity-50"
+          className="w-full py-3 bg-gradient-to-r from-gold-600 to-gold-500 text-white rounded-full font-bold text-lg shadow-xl hover:from-gold-700 hover:to-gold-600 transition-all duration-300 disabled:opacity-50"
           disabled={saving}
         >{saving ? "Guardando..." : "Guardar cambios"}</button>
       </form>

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { addResultado, getAllResultados, deleteResultado, updateResultado } from "@/utils/resultadosFirestore";
+import { addResultado, getAllResultados, deleteResultado, updateResultado } from "@/utils/resultadosSupabase";
 export async function PUT(req: Request) {
   const data = await req.json();
   const { id, ...rest } = data;

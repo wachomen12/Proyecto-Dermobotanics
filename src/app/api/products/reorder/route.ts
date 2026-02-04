@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { reorderProducts } from "@/utils/productsFirestore";
+import { reorderProducts } from "@/utils/productsSupabase";
 
 export async function POST(req: Request) {
   try {

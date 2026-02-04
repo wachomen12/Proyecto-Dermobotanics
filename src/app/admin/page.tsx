@@ -11,13 +11,13 @@ import Link from "next/link";
 import { uploadToCloudinary } from "@/utils/uploadToCloudinary";
 import ResultadosPanel from "./ResultadosPanel";
 import ResultadosAdminGaleria from "./ResultadosAdminGaleria";
-import { getAdminCredentials, setAdminCredentials } from "@/utils/adminConfig";
+import { getAdminCredentials, setAdminCredentials } from "@/utils/adminConfigSupabase";
 
 export default function AdminPanel() {
   // --- Estados de autenticación ---
   const [isAuth, setIsAuth] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [login, setLogin] = useState({ user: "", pass: "" });
+  const [login, setLogin] = useState({ username: "", pass: "" });
   const [error, setError] = useState("");
   const [adminUser, setAdminUser] = useState("admin");
   const [adminPass, setAdminPass] = useState("admin123");
@@ -63,8 +63,8 @@ export default function AdminPanel() {
 
   // Cargar credenciales
   useEffect(() => {
-    getAdminCredentials().then(({ user, pass }) => {
-      setAdminUser(user);
+    getAdminCredentials().then(({ username, pass }) => {
+      setAdminUser(username);
       setAdminPass(pass);
     });
   }, []);
@@ -103,7 +103,7 @@ export default function AdminPanel() {
     e.preventDefault();
     setLoading(true);
     setTimeout(() => {
-      if (login.user === adminUser && login.pass === adminPass) {
+      if (login.username === adminUser && login.pass === adminPass) {
         setIsAuth(true);
         setError("");
         showNotification("¡Bienvenido! 👋", "success");
@@ -116,7 +116,7 @@ export default function AdminPanel() {
 
   const handleLogout = () => {
     setIsAuth(false);
-    setLogin({ user: "", pass: "" });
+    setLogin({ username: "", pass: "" });
     showNotification("Sesión cerrada correctamente", "success");
   };
 
@@ -569,7 +569,7 @@ export default function AdminPanel() {
     
     setLoading(true);
     try {
-      await setAdminCredentials({ user: newUser, pass: newPass });
+      await setAdminCredentials({ username: newUser, pass: newPass });
       setAdminUser(newUser);
       setAdminPass(newPass);
       setShowChangePass(false);
@@ -654,8 +654,8 @@ export default function AdminPanel() {
                 <div className="relative">
                   <input
                     type="text"
-                    value={login.user}
-                    onChange={(e) => { setLogin({ ...login, user: e.target.value }); setError(""); }}
+                    value={login.username}
+                    onChange={(e) => { setLogin({ ...login, username: e.target.value }); setError(""); }}
                     className="w-full px-4 py-3.5 bg-white/80 border-2 border-gold-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-gold-400/30 focus:border-gold-400 text-slate-800 transition-all duration-300 placeholder:text-gray-400"
                     placeholder="Ingresa tu usuario"
                     required

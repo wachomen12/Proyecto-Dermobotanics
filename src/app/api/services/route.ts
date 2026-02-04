@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { addService, getAllServices, deleteService, updateService } from "@/utils/servicesFirestore";
+import { addService, getAllServices, deleteService, updateService } from "@/utils/servicesSupabase";
 
 export async function GET() {
   const services = await getAllServices();

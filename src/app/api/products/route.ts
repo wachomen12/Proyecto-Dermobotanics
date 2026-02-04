@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { addProduct, getAllProducts, deleteProduct, reorderProducts } from "@/utils/productsFirestore";
+import { addProduct, getAllProducts, deleteProduct, reorderProducts } from "@/utils/productsSupabase";
 
 export async function GET() {
   const products = await getAllProducts();
