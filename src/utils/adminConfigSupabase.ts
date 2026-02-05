@@ -18,6 +18,6 @@ export async function getAdminCredentials() {
 export async function setAdminCredentials({ username, pass }: { username: string; pass: string }) {
   const { error } = await supabase
     .from(CONFIG_TABLE)
-    .upsert([{ id: ADMIN_ID, username, pass }], { onConflict: ['id'] });
+    .upsert([{ id: ADMIN_ID, username, pass }], { onConflict: 'id' });
   if (error) throw error;
 }
