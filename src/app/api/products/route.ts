@@ -1,3 +1,17 @@
+import { updateProduct } from "@/utils/productsSupabase";
+export async function PUT(req: Request) {
+  const data = await req.json();
+  if (!data.id) {
+    return NextResponse.json({ error: 'ID requerido para actualizar' }, { status: 400 });
+  }
+  try {
+    const updated = await updateProduct(data.id, data);
+    return NextResponse.json(updated);
+  } catch (error) {
+    console.error('Error al actualizar producto:', error);
+    return NextResponse.json({ error: 'Error al actualizar producto' }, { status: 500 });
+  }
+}
 import { NextResponse } from "next/server";
 import { addProduct, getAllProducts, deleteProduct, reorderProducts } from "@/utils/productsSupabase";
 

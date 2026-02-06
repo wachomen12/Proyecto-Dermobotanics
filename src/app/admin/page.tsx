@@ -316,88 +316,66 @@ export default function AdminPanel() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+    // ...validaciones existentes...
+    // (copiar aquí todo el bloque de validaciones y subida de imagen)
+
     // Validación: Nombre obligatorio
     if (!product.name || product.name.trim().length === 0) {
       showNotification("❌ El nombre del producto es obligatorio", "error");
       return;
     }
-
-    // Validación: Nombre mínimo 3 caracteres
     if (product.name.trim().length < 3) {
       showNotification("❌ El nombre debe tener al menos 3 caracteres", "error");
       return;
     }
-
-    // Validación: Nombre máximo 100 caracteres
     if (product.name.length > 100) {
       showNotification("❌ El nombre no puede tener más de 100 caracteres", "error");
       return;
     }
-
-    // Validación: Precio obligatorio
-    if (!product.price || product.price.trim() === "") {
+    if (!product.price || String(product.price).trim() === "") {
       showNotification("❌ El precio es obligatorio", "error");
       return;
     }
-
-    // Validación: Precio debe ser número positivo
-    const precio = parseFloat(product.price);
+    const precio = parseFloat(String(product.price));
     if (isNaN(precio) || precio < 0) {
       showNotification("❌ El precio debe ser un número válido mayor o igual a 0", "error");
       return;
     }
-
-    // Validación: Precio máximo razonable
     if (precio > 99999) {
       showNotification("❌ El precio es demasiado alto. Máximo permitido: $99,999", "error");
       return;
     }
-
-    // Validación: Descripción máximo 500 caracteres
     if (product.description && product.description.length > 500) {
       showNotification("❌ La descripción no puede tener más de 500 caracteres", "error");
       return;
     }
-
-    // Validación: Marca obligatoria
     if (!product.marca || product.marca.trim().length === 0) {
       showNotification("❌ Debes seleccionar una marca", "error");
       return;
     }
-
-    // Validación: Categoría obligatoria
     if (!product.categoria || product.categoria.trim().length === 0) {
       showNotification("❌ Debes seleccionar una categoría", "error");
       return;
     }
-
-    // Validación: Imagen recomendada
     if (!product.image && !preview) {
       if (!window.confirm("⚠️ No has agregado una imagen del producto. ¿Deseas continuar sin ella?")) {
         return;
       }
     }
-
-    // Validación: Tamaño de imagen
     if (product.image instanceof File) {
       const maxSize = 5 * 1024 * 1024; // 5MB
       if (product.image.size > maxSize) {
         showNotification("❌ La imagen es demasiado grande. Máximo permitido: 5MB", "error");
         return;
       }
-
-      // Validar tipo de archivo
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
       if (!allowedTypes.includes(product.image.type)) {
         showNotification("❌ Formato de imagen no válido. Usa: JPG, PNG, WEBP o GIF", "error");
         return;
       }
     }
-
     setLoading(true);
     let imgSrc = preview || null;
-    
     if (product.image instanceof File) {
       try {
         imgSrc = await uploadToCloudinary(product.image);
@@ -409,29 +387,50 @@ export default function AdminPanel() {
     }
 
     try {
-      const res = await fetch("/api/products", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: product.name.trim(),
-          description: product.description?.trim() || "",
-          price: precio.toFixed(2),
-          marca: product.marca,
-          categoria: product.categoria,
-          image: imgSrc,
-          promo: product.promo,
-          orden: products.length + 1, // Nuevo producto al final
-        }),
-      });
-      
+      let res;
+      if (editIndex !== null && products[editIndex]?.id) {
+        // UPDATE (PUT) producto existente
+        res = await fetch("/api/products", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: products[editIndex].id,
+            name: product.name.trim(),
+            description: product.description?.trim() || "",
+            price: precio.toFixed(2),
+            marca: product.marca,
+            categoria: product.categoria,
+            image: imgSrc,
+            promo: product.promo,
+            orden: products[editIndex].orden || (editIndex + 1),
+          }),
+        });
+      } else {
+        // CREAR (POST) producto nuevo
+        res = await fetch("/api/products", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: product.name.trim(),
+            description: product.description?.trim() || "",
+            price: precio.toFixed(2),
+            marca: product.marca,
+            categoria: product.categoria,
+            image: imgSrc,
+            promo: product.promo,
+            orden: products.length + 1,
+          }),
+        });
+      }
+
       if (!res.ok) throw new Error("Error al guardar producto");
-      
+
       // Recargar productos
       const updated = await fetch("/api/products").then(r => r.json());
       const sortedProducts = updated.sort((a: any, b: any) => (a.orden || 0) - (b.orden || 0));
       setProducts(sortedProducts);
-      
-      showNotification("✨ Producto agregado correctamente", "success");
+
+      showNotification(editIndex !== null ? "✅ Producto actualizado correctamente" : "✨ Producto agregado correctamente", "success");
       setProduct({ name: "", description: "", price: "", marca: marcas[0], categoria: categorias[0], image: null, promo: false });
       setPreview(null);
       setEditIndex(null);

@@ -1,3 +1,13 @@
+
+export async function updateProduct(id: string, updates: any) {
+  const { data, error } = await supabase
+    .from(PRODUCTS_TABLE)
+    .update(updates)
+    .eq('id', id)
+    .select();
+  if (error) throw error;
+  return data?.[0];
+}
 import { supabase } from './supabaseClient';
 
 const PRODUCTS_TABLE = 'products';

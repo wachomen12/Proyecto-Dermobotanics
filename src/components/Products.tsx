@@ -25,6 +25,7 @@ export default function Products() {
   const [activeCategory, setActiveCategory] = useState("todos");
   const [showPromoOnly, setShowPromoOnly] = useState(false);
   const [products, setProducts] = useState<any[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
 
   useEffect(() => {
     fetch("/api/products")
@@ -284,7 +285,8 @@ export default function Products() {
                       alt={product.name}
                       width={400}
                       height={256}
-                      className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700"
+                      className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 cursor-pointer"
+                      onClick={() => setSelectedProduct(product)}
                     />
                     {/* Overlay sutil en la imagen */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -301,24 +303,7 @@ export default function Products() {
                 )}
 
                 {/* Badge de marca con estilo premium */}
-                <div className="absolute top-4 left-4 flex flex-col gap-2">
-                  <div 
-                    className="px-4 py-2 rounded-full text-xs font-bold text-white shadow-xl backdrop-blur-md"
-                    style={{
-                      background: `linear-gradient(135deg, ${getBrandColor(product.marca)}, ${getBrandColor(product.marca)}dd)`,
-                      boxShadow: `0 8px 20px ${getBrandColor(product.marca)}40`,
-                    }}
-                  >
-                    {product.marca}
-                  </div>
-                  
-                  {/* Badge de Promoción */}
-                  {product.promo && (
-                    <div className="px-4 py-2 rounded-full text-xs font-bold text-white shadow-xl backdrop-blur-md bg-gradient-to-r from-pink-400 to-pink-600 animate-pulse flex items-center gap-1">
-                      🎁 Promo
-                    </div>
-                  )}
-                </div>
+                {/* Eliminado badge de marca y promo para mostrar solo la imagen */}
 
                 {/* Badge de categoría con icono */}
                 <div className="absolute top-4 right-4">
@@ -330,12 +315,7 @@ export default function Products() {
                 </div>
 
                 {/* Indicador de disponibilidad */}
-                <div className="absolute bottom-4 left-4">
-                  <div className="flex items-center gap-2 px-3 py-1.5 bg-white/95 backdrop-blur-md rounded-full shadow-lg">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    <span className="text-xs font-semibold text-[#2a2a2a]">Disponible</span>
-                  </div>
-                </div>
+                {/* Eliminado indicador de disponibilidad para mostrar solo la imagen */}
               </div>
 
               {/* Content mejorado */}
@@ -396,6 +376,32 @@ export default function Products() {
                     </svg>
                   </a>
                 </div>
+                {/* Modal de imagen ampliada con descripción */}
+                {selectedProduct && (
+                  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm" onClick={() => setSelectedProduct(null)}>
+                    <div className="relative max-w-3xl w-full mx-4 bg-white rounded-2xl shadow-2xl p-6 flex flex-col md:flex-row gap-8" onClick={e => e.stopPropagation()}>
+                      <button
+                        className="absolute top-2 right-2 bg-white rounded-full p-2 shadow hover:bg-gray-200 transition"
+                        onClick={() => setSelectedProduct(null)}
+                        aria-label="Cerrar"
+                      >
+                        <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                      <div className="flex-1 flex items-center justify-center">
+                        <img src={selectedProduct.image} alt={selectedProduct.name} className="w-full h-auto max-h-[60vh] object-contain rounded-xl" />
+                      </div>
+                      <div className="flex-1 flex flex-col justify-center">
+                        <h2 className="text-2xl font-bold mb-4 text-[#c9a962]">{selectedProduct.name}</h2>
+                        <p className="text-base text-[#4a4a4a] whitespace-pre-line mb-4">{selectedProduct.description}</p>
+                        <div className="mt-2">
+                          <span className="text-lg font-semibold text-[#b8954d]">Precio: ${selectedProduct.price}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* Texto adicional del botón */}
                 <div className="mt-4 text-center">
