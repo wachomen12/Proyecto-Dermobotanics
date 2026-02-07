@@ -155,13 +155,13 @@ export default function AdminPanel() {
     }
 
     // Validación: Precio obligatorio
-    if (!service.price || service.price.trim() === "") {
+    if (!service.price || String(service.price).trim() === "") {
       showNotification("❌ El precio es obligatorio", "error");
       return;
     }
 
     // Validación: Precio debe ser número positivo
-    const precio = parseFloat(service.price);
+    const precio = parseFloat(String(service.price));
     if (isNaN(precio) || precio < 0) {
       showNotification("❌ El precio debe ser un número válido mayor o igual a 0", "error");
       return;
@@ -223,27 +223,49 @@ export default function AdminPanel() {
     }
 
     try {
-      const res = await fetch("/api/services", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: service.name.trim(),
-          title: service.name.trim(),
-          description: service.description?.trim() || "",
-          price: precio.toFixed(2),
-          duration: service.duration?.trim() || "",
-          image: imgSrc,
-          icon: imgSrc ? "" : icon,
-          popular: service.popular,
-          promo: service.promo
-        }),
-      });
+      let res;
+      if (editServiceIndex !== null && services[editServiceIndex]?.id) {
+        // UPDATE (PUT) servicio existente
+        res = await fetch("/api/services", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: services[editServiceIndex].id,
+            name: service.name.trim(),
+            title: service.name.trim(),
+            description: service.description?.trim() || "",
+            price: precio.toFixed(2),
+            duration: service.duration?.trim() || "",
+            image: imgSrc,
+            icon: imgSrc ? "" : icon,
+            popular: service.popular,
+            promo: service.promo
+          }),
+        });
+      } else {
+        // CREAR (POST) servicio nuevo
+        res = await fetch("/api/services", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: service.name.trim(),
+            title: service.name.trim(),
+            description: service.description?.trim() || "",
+            price: precio.toFixed(2),
+            duration: service.duration?.trim() || "",
+            image: imgSrc,
+            icon: imgSrc ? "" : icon,
+            popular: service.popular,
+            promo: service.promo
+          }),
+        });
+      }
       
       if (!res.ok) throw new Error("Error al guardar servicio");
       
       const updated = await fetch("/api/services").then(r => r.json());
       setServices(updated);
-      showNotification("✨ Servicio agregado correctamente", "success");
+      showNotification(editServiceIndex !== null ? "✅ Servicio actualizado correctamente" : "✨ Servicio agregado correctamente", "success");
       setService({ name: "", description: "", price: "", duration: "", image: null, icon: "", popular: false, promo: false });
       setServicePreview(null);
       setEditServiceIndex(null);
@@ -1447,14 +1469,19 @@ export default function AdminPanel() {
                       <div className="p-5">
                         <h3 className="font-bold text-slate-800 text-lg mb-2 line-clamp-1">{prod.name}</h3>
                         <p className="text-slate-600 text-sm mb-3 line-clamp-2 min-h-[40px]">{prod.description || "Sin descripción"}</p>
-                        
+                        {/* Etiqueta de categoría */}
+                        <div className="mb-2">
+                          <span className="block text-xs font-bold bg-amber-100 text-amber-700 rounded-full px-3 py-1 mb-1">{prod.categoria}</span>
+                          {/* Mostrar marca debajo de la categoría si es una de las 4 */}
+                          {['Natu', 'Bassa', 'Amorenature', 'Natural Center'].includes(prod.marca) && (
+                            <span className="block text-xs font-bold bg-emerald-100 text-emerald-700 rounded-full px-3 py-1 mt-1">{prod.marca}</span>
+                          )}
+                        </div>
                         <div className="space-y-2 mb-4">
                           <div className="flex items-center justify-between">
                             <span className="text-2xl font-bold text-emerald-600">${prod.price}</span>
                           </div>
                           <div className="flex items-center gap-2 text-xs flex-wrap">
-                            <span className="px-3 py-1 bg-amber-100 text-amber-700 rounded-full font-medium">{prod.marca}</span>
-                            <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full font-medium">{prod.categoria}</span>
                             {prod.promo && (
                               <span className="px-3 py-1 bg-pink-100 text-pink-700 rounded-full font-medium flex items-center gap-1">
                                 🎁 Promoción

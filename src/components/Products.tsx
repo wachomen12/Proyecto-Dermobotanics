@@ -331,6 +331,12 @@ export default function Products() {
                   >
                     {categories.find((c) => normalize(c.name).includes(normalize(product.categoria)))?.name || product.categoria}
                   </span>
+                  {/* Mostrar marca debajo de la categoría para todos los productos */}
+                  {product.marca && (
+                    <span className="text-xs font-bold bg-emerald-100 text-emerald-700 rounded-full px-3 py-1 ml-2">
+                      {product.marca}
+                    </span>
+                  )}
                 </div>
 
                 {/* Nombre del producto */}
