@@ -47,7 +47,7 @@ const marcas = [
 
 export default function About() {
   return (
-    <section id="nosotros" className="py-16 md:py-24 bg-white relative overflow-hidden">
+    <section id="nosotros" className="py-20 md:py-28 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
         {/* Main About */}
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center mb-16 md:mb-24">
@@ -81,19 +81,20 @@ export default function About() {
 
           {/* Content Side */}
           <div className="order-1 lg:order-2 text-center lg:text-left">
-            <span className="inline-block px-4 py-2 bg-[#2d5a3d]/10 rounded-full text-xs md:text-sm text-[#2d5a3d] font-medium mb-4">
+            <span className="inline-flex items-center gap-2 px-4 py-2 bg-[#faf6ed] rounded-full text-xs text-[#b8954d] font-medium mb-5 border border-[#e7dbc2]/40 tracking-[0.1em] uppercase">
+              <span className="w-1.5 h-1.5 bg-[#c9a962] rounded-full"></span>
               Nuestra Historia
             </span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#4a4a4a] mb-4 md:mb-6">
-              Belleza que <span className="text-[#bfa14a]">Conecta</span> con la Naturaleza
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-[#3a3a3a] mb-4 md:mb-6">
+              Belleza que <span className="font-semibold bg-gradient-to-r from-[#c9a962] to-[#b8954d] bg-clip-text text-transparent">Conecta</span> con la Naturaleza
             </h2>
-            <p className="text-base md:text-lg text-[#5a5a5a] mb-4 md:mb-6 leading-relaxed">
+            <p className="text-sm md:text-base text-[#5a5a5a] mb-5 md:mb-6 leading-relaxed">
               Rest and Relax Dermobotanics es estética, spa y cuidado consciente de la piel. Brindamos tratamientos y productos seleccionados que promueven bienestar, equilibrio y calma.<br />
               Aquí no vendemos magia, cultivamos bienestar integral.
             </p>
-            <div className="p-4 md:p-6 bg-[#f8f6f3] rounded-2xl border-l-4 border-[#2d5a3d] text-left">
-              <h4 className="font-bold text-[#2d5a3d] mb-2 text-sm md:text-base">Misión</h4>
-              <p className="text-[#5a5a5a] text-sm md:text-base">
+            <div className="p-4 md:p-6 bg-[#faf6ed] rounded-2xl border-l-4 border-[#c9a962] text-left">
+              <h4 className="font-bold text-[#b8954d] mb-2 text-sm md:text-base">Misión</h4>
+              <p className="text-[#5a5a5a] text-sm">
                 Ofrecemos productos de cuidado natural y experiencias estéticas que integran extractos botánicos con respaldo dermatológico, promoviendo la salud, el bienestar y el equilibrio de la piel de forma segura y eficaz.
               </p>
             </div>
@@ -102,19 +103,19 @@ export default function About() {
 
         {/* Values */}
         <div className="mb-16 md:mb-24">
-          <div className="text-center mb-8 md:mb-12">
-            <h3 className="text-2xl md:text-3xl font-bold mb-2 bg-gradient-to-r from-[#d4b886] via-[#c9a962] to-[#b8954d] bg-clip-text text-transparent">Nuestros Valores</h3>
+          <div className="text-center mb-8 md:mb-10">
+            <h3 className="text-2xl md:text-3xl font-light mb-2">Nuestros <span className="font-semibold bg-gradient-to-r from-[#c9a962] to-[#b8954d] bg-clip-text text-transparent">Valores</span></h3>
             <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="w-12 h-px bg-gradient-to-r from-transparent via-[#c9a962] to-transparent"></div>
-              <div className="w-2 h-2 rounded-full bg-[#c9a962] animate-pulse"></div>
-              <div className="w-12 h-px bg-gradient-to-r from-transparent via-[#c9a962] to-transparent"></div>
+              <div className="w-10 h-px bg-gradient-to-r from-transparent via-[#c9a962]/60 to-transparent"></div>
+              <div className="w-1.5 h-1.5 rounded-full bg-[#c9a962]/60"></div>
+              <div className="w-10 h-px bg-gradient-to-r from-transparent via-[#c9a962]/60 to-transparent"></div>
             </div>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
             {values.map((value, index) => (
               <div
                 key={index}
-                className="text-center p-4 md:p-6 rounded-2xl bg-[#fafafa] hover-lift"
+                className="text-center p-4 md:p-6 rounded-2xl bg-[#faf8f5] hover:shadow-md hover:-translate-y-1 transition-all duration-300 border border-transparent hover:border-[#e7dbc2]/40"
               >
                 <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 rounded-full bg-gradient-to-br from-[#d4b886]/20 to-[#c9a962]/20 flex items-center justify-center text-2xl md:text-3xl text-[#c9a962] shadow-lg">
                   {value.icon}

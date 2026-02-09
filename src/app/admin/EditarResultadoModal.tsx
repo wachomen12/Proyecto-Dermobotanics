@@ -60,12 +60,12 @@ export default function EditarResultadoModal({ resultado, onClose, onSave }: {
           <div className="flex flex-col items-center bg-gradient-to-br from-[#faf8f5] to-white rounded-xl p-4 shadow">
             <label className="font-semibold text-slate-700 mb-2 text-lg">Antes</label>
             <Image src={before} alt="Antes" width={120} height={120} className="rounded-xl object-cover mb-3 border border-gold-200 shadow" />
-            <input type="file" accept="image/*" onChange={handleBeforeChange} className="block w-full text-sm text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gold-50 file:text-gold-700 hover:file:bg-gold-100" />
+            <input type="file" accept="image/*" onChange={handleBeforeChange} aria-label="Foto antes" className="block w-full text-sm text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gold-50 file:text-gold-700 hover:file:bg-gold-100" />
           </div>
           <div className="flex flex-col items-center bg-gradient-to-br from-[#faf8f5] to-white rounded-xl p-4 shadow">
             <label className="font-semibold text-slate-700 mb-2 text-lg">Después</label>
             <Image src={after} alt="Después" width={120} height={120} className="rounded-xl object-cover mb-3 border border-gold-200 shadow" />
-            <input type="file" accept="image/*" onChange={handleAfterChange} className="block w-full text-sm text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gold-50 file:text-gold-700 hover:file:bg-gold-100" />
+            <input type="file" accept="image/*" onChange={handleAfterChange} aria-label="Foto después" className="block w-full text-sm text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gold-50 file:text-gold-700 hover:file:bg-gold-100" />
           </div>
         </div>
         <textarea

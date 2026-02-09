@@ -801,18 +801,24 @@ export default function AdminPanel() {
       
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-8 border border-slate-200">
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-8 md:p-10 mb-8 border border-[#e7dbc2]/40">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-              <h1 className="text-3xl md:text-4xl font-extrabold text-slate-800 mb-1">Panel de Administración</h1>
-              <p className="text-slate-600 text-base">Gestiona tu negocio de forma fácil y rápida</p>
+              <div className="inline-flex items-center gap-2 px-5 py-2 bg-white/70 backdrop-blur-sm rounded-full mb-4 shadow-sm border border-[#e7dbc2]/40">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#c9a962] animate-pulse"></div>
+                <span className="text-xs font-medium text-[#4a4a4a] tracking-[0.15em] uppercase">Panel Admin</span>
+              </div>
+              <h1 className="text-3xl md:text-4xl font-light text-[#3a3a3a] mb-1">
+                Panel de <span className="font-semibold bg-gradient-to-r from-[#c9a962] to-[#b8954d] bg-clip-text text-transparent">Administración</span>
+              </h1>
+              <p className="text-[#5a5a5a] text-base">Gestiona tu negocio de forma fácil y rápida</p>
             </div>
             <div className="flex gap-3 flex-wrap">
               <button
                 onClick={() => setShowChangePass(true)}
-                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition-all flex items-center gap-2 border border-slate-300"
+                className="px-4 py-2 bg-white/80 hover:bg-[#faf8f5] text-[#3a3a3a] rounded-xl font-semibold transition-all flex items-center gap-2 border border-[#e7dbc2]/30"
               >
-                <Key className="w-4 h-4" />
+                <Key className="w-4 h-4 text-[#c9a962]" />
                 <span className="hidden sm:inline">Cambiar Credenciales</span>
                 <span className="sm:hidden">Credenciales</span>
               </button>
@@ -827,37 +833,37 @@ export default function AdminPanel() {
           </div>
 
           {/* Pestañas mejoradas */}
-          <div className="flex gap-2 mt-6 border-b border-slate-200 overflow-x-auto">
+          <div className="flex gap-2 mt-6 border-b border-[#e7dbc2]/40 overflow-x-auto">
             <button
               onClick={() => setActiveTab('servicios')}
               className={`px-6 py-3 font-semibold rounded-t-xl transition-all flex items-center gap-2 whitespace-nowrap ${
                 activeTab === 'servicios'
-                  ? 'bg-amber-50 text-amber-700 border-b-2 border-amber-500'
-                  : 'text-slate-600 hover:text-slate-800 hover:bg-slate-50'
+                  ? 'bg-gold-50 text-[#c9a962] border-b-2 border-[#c9a962]'
+                  : 'text-[#5a5a5a] hover:text-[#3a3a3a] hover:bg-gold-50'
               }`}
             >
               <Sparkles className="w-4 h-4" />
               Servicios
-              <span className="bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full text-xs font-bold">{services.length}</span>
+              <span className="bg-gold-100 text-[#c9a962] px-2 py-0.5 rounded-full text-xs font-bold">{services.length}</span>
             </button>
             <button
               onClick={() => setActiveTab('productos')}
               className={`px-6 py-3 font-semibold rounded-t-xl transition-all flex items-center gap-2 whitespace-nowrap ${
                 activeTab === 'productos'
-                  ? 'bg-emerald-50 text-emerald-700 border-b-2 border-emerald-500'
-                  : 'text-slate-600 hover:text-slate-800 hover:bg-slate-50'
+                  ? 'bg-bronze-50 text-[#b8954d] border-b-2 border-[#b8954d]'
+                  : 'text-[#5a5a5a] hover:text-[#3a3a3a] hover:bg-bronze-50'
               }`}
             >
               <Package className="w-4 h-4" />
               Productos
-              <span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full text-xs font-bold">{products.length}</span>
+              <span className="bg-bronze-100 text-[#b8954d] px-2 py-0.5 rounded-full text-xs font-bold">{products.length}</span>
             </button>
             <button
               onClick={() => setActiveTab('resultados')}
               className={`px-6 py-3 font-semibold rounded-t-xl transition-all flex items-center gap-2 whitespace-nowrap ${
                 activeTab === 'resultados'
                   ? 'bg-purple-50 text-purple-700 border-b-2 border-purple-500'
-                  : 'text-slate-600 hover:text-slate-800 hover:bg-slate-50'
+                  : 'text-[#5a5a5a] hover:text-[#3a3a3a] hover:bg-purple-50'
               }`}
             >
               <Star className="w-4 h-4" />
@@ -987,6 +993,7 @@ export default function AdminPanel() {
                           type="file"
                           accept="image/*"
                           onChange={handleServiceImage}
+                          aria-label="Imagen del servicio"
                           className="w-full border border-slate-300 rounded-xl px-4 py-3 bg-white text-slate-800 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-amber-50 file:text-amber-700 file:font-medium hover:file:bg-amber-100 file:cursor-pointer cursor-pointer text-sm"
                         />
                         {service.image instanceof File && (
@@ -1021,6 +1028,7 @@ export default function AdminPanel() {
                             setServicePreview(null);
                             setService({ ...service, image: null });
                           }}
+                          aria-label="Eliminar imagen"
                           className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 shadow-md"
                         >
                           <X className="w-4 h-4" />
@@ -1286,6 +1294,7 @@ export default function AdminPanel() {
                     <select
                       value={product.marca}
                       onChange={(e) => setProduct({ ...product, marca: e.target.value })}
+                      aria-label="Marca del producto"
                       className="w-full border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800 bg-white"
                     >
                       {marcas.map((m) => (
@@ -1303,6 +1312,7 @@ export default function AdminPanel() {
                     <select
                       value={product.categoria}
                       onChange={(e) => setProduct({ ...product, categoria: e.target.value })}
+                      aria-label="Categoría del producto"
                       className="w-full border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800 bg-white"
                     >
                       {categorias.map((c) => (
@@ -1321,6 +1331,7 @@ export default function AdminPanel() {
                       type="file"
                       accept="image/*"
                       onChange={handleImage}
+                      aria-label="Imagen del producto"
                       className="w-full border border-slate-300 rounded-xl px-4 py-3 bg-white text-slate-800 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-emerald-50 file:text-emerald-700 file:font-medium hover:file:bg-emerald-100 file:cursor-pointer cursor-pointer text-sm"
                     />
                     {product.image instanceof File && (
@@ -1340,6 +1351,7 @@ export default function AdminPanel() {
                             setPreview(null);
                             setProduct({ ...product, image: null });
                           }}
+                          aria-label="Eliminar imagen"
                           className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 shadow-md"
                         >
                           <X className="w-4 h-4" />
@@ -1550,6 +1562,7 @@ export default function AdminPanel() {
                     setNewUser("");
                     setError("");
                   }}
+                  aria-label="Cerrar"
                   className="p-2 hover:bg-slate-100 rounded-lg transition-all"
                 >
                   <X className="w-6 h-6" />

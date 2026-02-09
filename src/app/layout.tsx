@@ -34,7 +34,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/logo.png" type="image/png" sizes="32x32" />
       </head>
-      <body className={`${inter.variable} ${playfair.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${playfair.variable} font-sans antialiased selection:bg-gold-400/20 selection:text-elegant-charcoal`}>
         {children}
       </body>
     </html>

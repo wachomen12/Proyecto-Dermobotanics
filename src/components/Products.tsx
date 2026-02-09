@@ -20,12 +20,15 @@ const categories = [
   { id: "suplementos", name: "Suplementos", icon: "💊" },
 ];
 
+const MOBILE_PRODUCTS_COUNT = 4;
+
 export default function Products() {
   const [activeBrand, setActiveBrand] = useState("todas");
   const [activeCategory, setActiveCategory] = useState("todos");
   const [showPromoOnly, setShowPromoOnly] = useState(false);
   const [products, setProducts] = useState<any[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
+  const [showAllProducts, setShowAllProducts] = useState(false);
 
   useEffect(() => {
     fetch("/api/products")
@@ -79,11 +82,20 @@ export default function Products() {
       <div className="container mx-auto px-4 relative z-10">
         
         {/* Header */}
-        <div className="text-center mb-16 md:mb-20">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#c9a962] mb-3">
-            Catálogo de Productos
+        <div className="text-center mb-12 md:mb-16">
+          <div className="inline-flex items-center gap-2 px-5 py-2 bg-white/70 backdrop-blur-sm rounded-full mb-6 shadow-sm border border-[#e7dbc2]/40">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#c9a962] animate-pulse"></div>
+            <span className="text-xs font-medium text-[#4a4a4a] tracking-[0.15em] uppercase">Productos Premium</span>
+          </div>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-[#3a3a3a] mb-3">
+            Catálogo de <span className="font-semibold bg-gradient-to-r from-[#c9a962] to-[#b8954d] bg-clip-text text-transparent">Productos</span>
           </h2>
-          <p className="text-base md:text-lg text-[#4a4a4a] max-w-2xl mx-auto leading-relaxed px-4 mb-2">
+          <div className="flex items-center justify-center gap-3 mb-5">
+            <div className="w-12 h-px bg-gradient-to-r from-transparent via-[#c9a962]/60 to-transparent"></div>
+            <div className="w-2 h-2 rounded-full bg-[#c9a962]/60"></div>
+            <div className="w-12 h-px bg-gradient-to-r from-transparent via-[#c9a962]/60 to-transparent"></div>
+          </div>
+          <p className="text-sm md:text-base text-[#5a5a5a] max-w-2xl mx-auto leading-relaxed px-4">
             Trabajamos con las mejores marcas del mercado para ofrecerte
             productos de alta calidad
           </p>
@@ -196,7 +208,7 @@ export default function Products() {
               return (
                 <button
                   key={brand.id}
-                  onClick={() => setActiveBrand(brand.id)}
+                  onClick={() => { setActiveBrand(brand.id); setShowAllProducts(false); }}
                   className={`relative px-7 py-3 rounded-full font-semibold transition-all duration-300 text-base overflow-hidden group focus:outline-none focus:ring-2 focus:ring-[#c9a962]/40 shadow-md
                     ${isActive
                       ? "scale-105 text-white border-0"
@@ -225,7 +237,7 @@ export default function Products() {
             {categories.map((category) => (
               <button
                 key={category.id}
-                onClick={() => setActiveCategory(category.id)}
+                onClick={() => { setActiveCategory(category.id); setShowAllProducts(false); }}
                 className={`px-4 py-2 md:px-6 md:py-3 rounded-full font-medium transition-all duration-300 text-xs md:text-sm whitespace-nowrap flex items-center gap-2 snap-center ${
                   activeCategory === category.id
                     ? "bg-gradient-to-r from-[#d4b886] to-[#c9a962] text-white shadow-xl shadow-[#c9a962]/30 scale-105"
@@ -242,7 +254,7 @@ export default function Products() {
           {/* Filtro de Promociones */}
           <div className="flex justify-center mt-6">
             <button
-              onClick={() => setShowPromoOnly(!showPromoOnly)}
+              onClick={() => { setShowPromoOnly(!showPromoOnly); setShowAllProducts(false); }}
               className={`px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 flex items-center gap-2 ${
                 showPromoOnly
                   ? "bg-gradient-to-r from-pink-400 via-pink-500 to-pink-600 text-white shadow-xl shadow-pink-500/40 scale-105"
@@ -262,22 +274,24 @@ export default function Products() {
 
         {/* Products Grid Premium - MEJORADO */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
-          {[...filteredProducts].sort((a, b) => (a.orden || 0) - (b.orden || 0)).map((product) => (
+          {(showAllProducts
+            ? [...filteredProducts].sort((a, b) => (a.orden || 0) - (b.orden || 0))
+            : [...filteredProducts].sort((a, b) => (a.orden || 0) - (b.orden || 0)).slice(0, MOBILE_PRODUCTS_COUNT)
+          ).map((product) => (
             <div
               key={product.id}
-              className="group relative bg-white rounded-3xl overflow-hidden transition-all duration-700 hover:-translate-y-3 hover:shadow-2xl border-2 border-transparent hover:border-[#c9a962]/30"
-              style={{
-                boxShadow: '0 4px 20px rgba(201, 169, 98, 0.08)',
-              }}
-            >
-              {/* Efecto shimmer premium en hover */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#c9a962]/10 via-transparent to-[#d4b886]/10"></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
+className="group relative bg-white rounded-2xl overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-xl border border-[#e7dbc2]/30 hover:border-[#c9a962]/30"
+            style={{
+              boxShadow: '0 2px 12px rgba(201, 169, 98, 0.06)',
+            }}
+          >
+            {/* Efecto shimmer premium en hover */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#c9a962]/5 via-transparent to-[#d4b886]/5"></div>
               </div>
 
-              {/* Product Image con overlay gradiente */}
-              <div className="relative h-56 md:h-64 overflow-hidden bg-gradient-to-br from-[#faf8f5] to-[#f5f0e8]">
+              {/* Product Image */}
+              <div className="relative h-48 md:h-56 overflow-hidden bg-gradient-to-br from-[#faf8f5] to-[#f5f0e8]">
                 {typeof product.image === 'string' && product.image ? (
                   <>
                     <Image
@@ -318,8 +332,8 @@ export default function Products() {
                 {/* Eliminado indicador de disponibilidad para mostrar solo la imagen */}
               </div>
 
-              {/* Content mejorado */}
-              <div className="p-6 relative z-10">
+                {/* Content */}
+              <div className="p-5 relative z-10">
                 {/* Categoría */}
                 <div className="flex items-center gap-2 mb-3">
                   <span
@@ -340,23 +354,23 @@ export default function Products() {
                 </div>
 
                 {/* Nombre del producto */}
-                <h3 className="text-lg md:text-xl font-bold text-[#2a2a2a] mb-3 line-clamp-2 min-h-[56px] group-hover:text-[#c9a962] transition-colors duration-300">
+                <h3 className="text-base md:text-lg font-bold text-[#2a2a2a] mb-2 line-clamp-2 min-h-[48px] group-hover:text-[#b8954d] transition-colors duration-300">
                   {product.name}
                 </h3>
 
-                {/* Descripción mejorada */}
-                <p className="text-sm text-[#4a4a4a] mb-4 line-clamp-2 min-h-[40px] leading-relaxed">
+                {/* Descripción */}
+                <p className="text-xs text-[#5a5a5a] mb-3 line-clamp-2 min-h-[32px] leading-relaxed">
                   {product.description || "Producto premium de alta calidad para el cuidado de tu piel"}
                 </p>
 
-                {/* Separador elegante */}
-                <div className="h-px bg-gradient-to-r from-transparent via-[#c9a962]/30 to-transparent mb-4"></div>
+                {/* Separador */}
+                <div className="h-px bg-gradient-to-r from-transparent via-[#e7dbc2]/50 to-transparent mb-3"></div>
 
-                {/* Price & CTA mejorados */}
+                {/* Price & CTA */}
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col">
-                    <span className="text-xs text-[#4a4a4a] font-medium mb-1">Precio</span>
-                    <span className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-[#d4b886] via-[#c9a962] to-[#b8954d] bg-clip-text text-transparent">
+                    <span className="text-[10px] text-[#5a5a5a] font-medium mb-0.5 uppercase tracking-wider">Precio</span>
+                    <span className="text-xl md:text-2xl font-bold bg-gradient-to-r from-[#c9a962] to-[#b8954d] bg-clip-text text-transparent">
                       ${product.price}
                     </span>
                   </div>
@@ -365,16 +379,14 @@ export default function Products() {
                     href={`https://wa.me/593987901837?text=Hola%20👋%20Me%20interesa%20el%20producto:%20${encodeURIComponent(product.name)}%20-%20Precio:%20$${product.price}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group/btn relative p-4 rounded-2xl bg-gradient-to-r from-[#128C7E] to-[#25D366] text-white hover:scale-110 hover:rotate-3 transition-all duration-300 shadow-xl hover:shadow-2xl"
+                    aria-label={`Pedir ${product.name} por WhatsApp`}
+                    className="group/btn relative p-3 rounded-xl bg-gradient-to-r from-[#128C7E] to-[#25D366] text-white hover:scale-105 transition-all duration-300 shadow-md hover:shadow-lg"
                     style={{
-                      boxShadow: '0 8px 25px rgba(37, 211, 102, 0.3)',
+                      boxShadow: '0 4px 16px rgba(37, 211, 102, 0.25)',
                     }}
                   >
-                    {/* Efecto de onda en el botón */}
-                    <div className="absolute inset-0 rounded-2xl bg-white/20 scale-0 group-hover/btn:scale-100 transition-transform duration-500"></div>
-                    
                     <svg
-                      className="w-6 h-6 relative z-10"
+                      className="w-5 h-5 relative z-10"
                       fill="currentColor"
                       viewBox="0 0 24 24"
                     >
@@ -419,6 +431,26 @@ export default function Products() {
             </div>
           ))}
         </div>
+
+        {/* Botón Ver más / Ver menos productos */}
+        {filteredProducts.length > MOBILE_PRODUCTS_COUNT && (
+          <div className="flex justify-center mt-10">
+            <button
+              onClick={() => setShowAllProducts(!showAllProducts)}
+              className="group inline-flex items-center gap-3 px-8 py-4 bg-white/80 backdrop-blur-xl rounded-full font-semibold text-[#c9a962] border-2 border-[#c9a962]/30 shadow-lg hover:shadow-xl hover:border-[#c9a962]/60 hover:bg-[#faf6ed] transition-all duration-300"
+            >
+              <span>{showAllProducts ? 'Ver menos' : `Ver todos los productos (${filteredProducts.length})`}</span>
+              <svg
+                className={`w-5 h-5 transition-transform duration-300 ${showAllProducts ? 'rotate-180' : ''}`}
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          </div>
+        )}
 
         {/* Empty State Premium */}
         {filteredProducts.length === 0 && (

@@ -25,10 +25,10 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-out ${
         isScrolled 
-          ? "bg-white/80 backdrop-blur-xl shadow-lg shadow-[#c9a962]/10 py-1" 
-          : "bg-gradient-to-b from-white/60 via-white/40 to-transparent backdrop-blur-md py-2"
+          ? "bg-white/90 backdrop-blur-2xl shadow-[0_1px_3px_rgba(201,169,98,0.08)] py-1" 
+          : "bg-gradient-to-b from-white/70 via-white/50 to-transparent backdrop-blur-md py-3"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,8 +36,8 @@ export default function Navbar() {
           {/* Logo Premium */}
           <Link href="#inicio" className="flex items-center group">
             <div className={`transition-all duration-500 ${
-              isScrolled ? "w-10 h-10" : "w-14 h-14"
-            } rounded-full overflow-hidden bg-white shadow-2xl ring-2 ring-[#c9a962]/30 group-hover:ring-[#c9a962]/50 group-hover:scale-105 flex items-center justify-center relative`}>
+              isScrolled ? "w-10 h-10" : "w-12 h-12"
+            } rounded-full overflow-hidden bg-white shadow-lg ring-1 ring-[#c9a962]/20 group-hover:ring-[#c9a962]/40 group-hover:scale-105 flex items-center justify-center relative`}>
               {/* Gradiente dorado alrededor */}
               <div className="absolute inset-0 bg-gradient-to-br from-[#d4b886]/20 via-transparent to-[#c9a962]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <img 
@@ -54,12 +54,12 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
-                className="relative text-[#4a4a4a] hover:text-[#c9a962] transition-all duration-300 text-sm font-medium tracking-wide group"
+                className="relative text-[#3a3a3a] hover:text-[#b8954d] transition-all duration-300 text-[13px] font-medium tracking-[0.02em] uppercase group"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 {link.name}
                 {/* Underline dorado animado */}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-[#d4b886] via-[#c9a962] to-[#b8954d] transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-gradient-to-r from-[#d4b886] to-[#c9a962] transition-all duration-300 group-hover:w-full"></span>
                 {/* Glow effect */}
                 <span className="absolute inset-0 rounded-lg bg-[#c9a962]/0 group-hover:bg-[#c9a962]/5 transition-colors duration-300 -z-10"></span>
               </Link>
@@ -68,7 +68,7 @@ export default function Navbar() {
             {/* CTA Button Premium */}
             <Link
               href="#contacto"
-              className="relative px-8 py-3 bg-gradient-to-r from-[#d4b886] to-[#c9a962] text-white text-sm rounded-full font-semibold overflow-hidden group shadow-lg shadow-[#c9a962]/30 hover:shadow-xl hover:shadow-[#c9a962]/40 transition-all duration-300 hover:-translate-y-0.5"
+              className="relative px-7 py-2.5 bg-gradient-to-r from-[#c9a962] to-[#b8954d] text-white text-[13px] rounded-full font-semibold overflow-hidden group shadow-md shadow-[#c9a962]/20 hover:shadow-lg hover:shadow-[#c9a962]/30 transition-all duration-300 hover:-translate-y-0.5 tracking-wide uppercase"
             >
               {/* Efecto shimmer */}
               <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700"></span>
@@ -80,6 +80,7 @@ export default function Navbar() {
           <button
             className="md:hidden p-2.5 rounded-xl hover:bg-[#c9a962]/10 transition-colors duration-300"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label={isMobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
           >
             <div className="w-6 h-5 relative flex flex-col justify-between">
               <span
@@ -107,7 +108,7 @@ export default function Navbar() {
             isMobileMenuOpen ? "max-h-[600px] mt-6 opacity-100" : "max-h-0 opacity-0"
           }`}
         >
-          <div className="bg-white/90 backdrop-blur-xl rounded-3xl p-6 space-y-3 shadow-2xl shadow-[#c9a962]/20 border border-[#c9a962]/20">
+          <div className="bg-white/95 backdrop-blur-2xl rounded-2xl p-5 space-y-1 shadow-2xl shadow-black/10 border border-[#e7dbc2]/40">
             {navLinks.map((link, index) => (
               <Link
                 key={link.name}

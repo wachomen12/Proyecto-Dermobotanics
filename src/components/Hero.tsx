@@ -68,50 +68,51 @@ export default function Hero() {
           {/* Content */}
           <div className="text-center lg:text-left order-2 lg:order-1">
             {/* Badge elegante dorado */}
-            <div className="inline-flex items-center px-5 py-2.5 bg-gradient-to-r from-gold-50 to-white backdrop-blur-sm rounded-full mb-6 shadow-md border border-gold-300/40">
-              <span className="w-2 h-2 bg-gold-500 rounded-full mr-3 animate-pulse shadow-sm shadow-gold-500/50"></span>
-              <span className="text-xs md:text-sm text-elegant-charcoal font-medium tracking-wide">Cuidado consciente de la piel</span>
+            <div className="inline-flex items-center px-5 py-2 bg-white/70 backdrop-blur-sm rounded-full mb-8 shadow-sm border border-gold-200/50">
+              <span className="w-1.5 h-1.5 bg-gold-500 rounded-full mr-3 animate-pulse"></span>
+              <span className="text-xs text-elegant-charcoal/70 font-medium tracking-[0.15em] uppercase">Centro Estético & Spa</span>
             </div>
             
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-elegant-charcoal leading-tight mb-4 md:mb-6">
+            <h1 className="text-4xl md:text-5xl lg:text-7xl font-light text-elegant-charcoal leading-[1.1] mb-4 md:mb-6">
               Ciencia y
               <span className="block font-semibold bg-gradient-to-r from-gold-600 via-gold-500 to-bronze-500 bg-clip-text text-transparent">Naturaleza</span>
-              <span className="block text-2xl md:text-3xl font-normal text-gold-500 mt-2">en Perfecta Armonía</span>
+              <span className="block text-xl md:text-2xl font-normal text-gold-600/80 mt-3 tracking-wide">en Perfecta Armonía</span>
             </h1>
             
-            <p className="text-base md:text-lg text-gray-600 mb-8 max-w-md mx-auto lg:mx-0 leading-relaxed px-2">
+            <p className="text-sm md:text-base text-gray-500 mb-10 max-w-md mx-auto lg:mx-0 leading-relaxed">
               Tratamientos estéticos y experiencias de spa, acompañado de productos para mantener tus resultados en casa.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-2 justify-center lg:justify-start px-4 sm:px-0 mt-2">
-              <Link
-                href="#productos"
-                className="group px-5 py-2 bg-white/80 border border-gold-300 text-gold-700 rounded-full font-normal hover:bg-gold-50 hover:text-gold-800 transition-all duration-200 text-sm md:text-base shadow-none hover:shadow-none"
-              >
-                Ver Productos
-                <span className="inline-block ml-1 group-hover:translate-x-1 transition-transform">→</span>
-              </Link>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start px-4 sm:px-0">
               <a
                 href="#servicios"
-                className="group px-7 py-3 bg-gradient-to-r from-gold-500 via-gold-400 to-gold-600 text-white rounded-full font-bold text-base md:text-lg shadow-lg hover:from-gold-600 hover:to-gold-400 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 animate-pulse focus:outline-none focus:ring-4 focus:ring-gold-300/40"
+                className="group px-8 py-3.5 bg-gradient-to-r from-gold-500 to-gold-600 text-white rounded-full font-semibold text-sm md:text-base shadow-lg shadow-gold-500/25 hover:shadow-xl hover:shadow-gold-500/30 hover:scale-[1.03] transition-all duration-300 flex items-center justify-center gap-2"
               >
-                <span className="drop-shadow-lg">Agendar Cita Ahora</span>
-                <span className="inline-block ml-1 group-hover:translate-x-1 transition-transform text-xl">→</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                Agendar Cita
+                <span className="inline-block group-hover:translate-x-0.5 transition-transform">→</span>
               </a>
+              <Link
+                href="#productos"
+                className="group px-8 py-3.5 bg-white/80 border border-gold-300/60 text-gold-700 rounded-full font-medium hover:bg-gold-50 hover:border-gold-400/60 transition-all duration-300 text-sm md:text-base text-center"
+              >
+                Ver Productos
+                <span className="inline-block ml-1 group-hover:translate-x-0.5 transition-transform">→</span>
+              </Link>
             </div>
           </div>
         </div>
 
         {/* Stats - Dorado elegante */}
-        <div className="flex flex-col md:flex-row justify-center items-center gap-12 mt-12 md:mt-20">
+        <div className="flex flex-row justify-center items-center gap-8 md:gap-16 mt-16 md:mt-24">
           <div className="text-center group">
-            <p className="text-3xl md:text-5xl font-light bg-gradient-to-r from-gold-600 to-gold-400 bg-clip-text text-transparent group-hover:scale-110 transition-transform">100%</p>
-            <p className="text-xs md:text-sm text-gray-600 mt-2 uppercase tracking-widest">Natural</p>
+            <p className="text-3xl md:text-4xl font-light bg-gradient-to-r from-gold-600 to-gold-500 bg-clip-text text-transparent">100%</p>
+            <p className="text-[10px] md:text-xs text-gray-400 mt-1.5 uppercase tracking-[0.2em] font-medium">Natural</p>
           </div>
-          <div className="hidden md:block w-px h-12 bg-gradient-to-b from-transparent via-gold-300 to-transparent"></div>
+          <div className="w-px h-10 bg-gradient-to-b from-transparent via-gold-300/50 to-transparent"></div>
           <div className="text-center group">
-            <p className="text-3xl md:text-5xl font-light bg-gradient-to-r from-bronze-500 to-gold-500 bg-clip-text text-transparent group-hover:scale-110 transition-transform">Estética</p>
-            <p className="text-xs md:text-sm text-gray-600 mt-2 uppercase tracking-widest">& Spa</p>
+            <p className="text-3xl md:text-4xl font-light bg-gradient-to-r from-bronze-500 to-gold-500 bg-clip-text text-transparent">Estética</p>
+            <p className="text-[10px] md:text-xs text-gray-400 mt-1.5 uppercase tracking-[0.2em] font-medium">& Spa Premium</p>
           </div>
         </div>
       </div>

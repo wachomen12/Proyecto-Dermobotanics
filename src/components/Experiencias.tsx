@@ -41,7 +41,7 @@ export default function Experiencias() {
         <p className="text-gray-600 mb-8">Comparte tu resultado después de tu sesión. ¡Tu experiencia puede inspirar a otros!</p>
         <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg p-8 border border-slate-200 flex flex-col items-center gap-6 max-w-xl mx-auto">
           <label className="block w-full text-left font-medium text-slate-700 mb-2">Sube tu foto del resultado</label>
-          <input type="file" accept="image/*" onChange={handleFileChange} className="w-full mb-2" />
+          <input type="file" accept="image/*" onChange={handleFileChange} aria-label="Foto del resultado" className="w-full mb-2" />
           {preview && (
             <img src={preview} alt="Vista previa" className="w-40 h-40 object-cover rounded-xl shadow mb-2 mx-auto" />
           )}

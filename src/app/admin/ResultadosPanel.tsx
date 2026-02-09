@@ -69,14 +69,14 @@ export default function ResultadosPanel({ onUpload }: { onUpload?: () => void })
         <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
           <div className="flex-1 flex flex-col items-center">
             <label className="font-medium text-slate-700 mb-1">Foto ANTES</label>
-            <input type="file" accept="image/*" onChange={handleBeforeChange} className="w-full" />
+            <input type="file" accept="image/*" onChange={handleBeforeChange} aria-label="Foto antes" className="w-full" />
             {beforePreview && (
               <Image src={beforePreview} alt="Antes" width={120} height={120} className="rounded-lg object-cover mt-2" />
             )}
           </div>
           <div className="flex-1 flex flex-col items-center">
             <label className="font-medium text-slate-700 mb-1">Foto DESPUÉS</label>
-            <input type="file" accept="image/*" onChange={handleAfterChange} className="w-full" />
+            <input type="file" accept="image/*" onChange={handleAfterChange} aria-label="Foto después" className="w-full" />
             {afterPreview && (
               <Image src={afterPreview} alt="Después" width={120} height={120} className="rounded-lg object-cover mt-2" />
             )}

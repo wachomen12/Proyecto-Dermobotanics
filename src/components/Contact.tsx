@@ -81,26 +81,25 @@ export default function Contact() {
       </div>
 
       <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 relative z-10">
-        {/* Header Premium */}
-        <div className="text-center mb-16 md:mb-20">
-          <div className="inline-flex items-center gap-3 px-6 py-3 bg-white/80 backdrop-blur-md rounded-full mb-6 shadow-lg border border-[#c9a962]/20">
-            <div className="w-2 h-2 rounded-full bg-gradient-to-r from-[#d4b886] to-[#c9a962] animate-pulse"></div>
-            <span className="text-sm font-medium text-[#3a3a3a] tracking-wider uppercase">Contáctanos</span>
-            <div className="w-2 h-2 rounded-full bg-gradient-to-r from-[#d4b886] to-[#c9a962] animate-pulse"></div>
+        {/* Header */}
+        <div className="text-center mb-12 md:mb-16">
+          <div className="inline-flex items-center gap-2 px-5 py-2 bg-white/70 backdrop-blur-sm rounded-full mb-6 shadow-sm border border-[#e7dbc2]/40">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#c9a962] animate-pulse"></div>
+            <span className="text-xs font-medium text-[#4a4a4a] tracking-[0.15em] uppercase">Contáctanos</span>
           </div>
           
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-[#3a3a3a] mb-6">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-light text-[#3a3a3a] mb-5">
             Reserva tu{" "}
-            <span className="font-normal bg-gradient-to-r from-[#d4b886] via-[#c9a962] to-[#b8954d] bg-clip-text text-transparent">Cita</span>
+            <span className="font-semibold bg-gradient-to-r from-[#c9a962] to-[#b8954d] bg-clip-text text-transparent">Cita</span>
           </h2>
           
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="w-12 h-px bg-gradient-to-r from-transparent via-[#c9a962] to-transparent"></div>
-            <div className="w-2 h-2 rounded-full bg-[#c9a962] animate-pulse"></div>
-            <div className="w-12 h-px bg-gradient-to-r from-transparent via-[#c9a962] to-transparent"></div>
+          <div className="flex items-center justify-center gap-3 mb-5">
+            <div className="w-12 h-px bg-gradient-to-r from-transparent via-[#c9a962]/60 to-transparent"></div>
+            <div className="w-2 h-2 rounded-full bg-[#c9a962]/60"></div>
+            <div className="w-12 h-px bg-gradient-to-r from-transparent via-[#c9a962]/60 to-transparent"></div>
           </div>
           
-          <p className="text-lg md:text-xl text-[#4a4a4a] max-w-3xl mx-auto leading-relaxed px-4">
+          <p className="text-sm md:text-base text-[#5a5a5a] max-w-2xl mx-auto leading-relaxed px-4">
             Contáctanos para agendar tu cita o resolver cualquier duda
           </p>
         </div>
@@ -109,8 +108,8 @@ export default function Contact() {
 
         <div className="grid lg:grid-cols-2 gap-8 md:gap-12">
           {/* Form Premium */}
-          <div id="formulario-contacto" className="bg-white/80 backdrop-blur-lg rounded-3xl p-6 md:p-8 shadow-2xl border border-[#c9a962]/20">
-            <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-[#d4b886] to-[#c9a962] bg-clip-text text-transparent mb-6">
+          <div id="formulario-contacto" className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-lg border border-[#e7dbc2]/30">
+            <h3 className="text-xl md:text-2xl font-semibold bg-gradient-to-r from-[#c9a962] to-[#b8954d] bg-clip-text text-transparent mb-6">
               Envíanos un mensaje
             </h3>
             
@@ -145,6 +144,7 @@ export default function Contact() {
                 <select
                   value={formData.service}
                   onChange={e => setFormData({ ...formData, service: e.target.value })}
+                  aria-label="Servicio de interés"
                   className="w-full px-4 py-3 rounded-xl border-2 border-[#c9a962]/20 focus:border-[#c9a962] focus:ring-4 focus:ring-[#c9a962]/10 outline-none transition-all bg-white/50 backdrop-blur-sm text-gray-800"
                 >
                   <option value="">Selecciona un servicio</option>
@@ -159,14 +159,15 @@ export default function Contact() {
               </div>
 
               {/* Historia Clínica Premium */}
-              <div className="mt-6 p-6 bg-gradient-to-br from-[#faf8f5] to-white rounded-2xl border-2 border-[#c9a962]/20 shadow-lg">
-                <h4 className="text-lg font-bold bg-gradient-to-r from-[#d4b886] to-[#c9a962] bg-clip-text text-transparent mb-4 text-center">
+              <div className="mt-6 p-5 md:p-6 bg-gradient-to-br from-[#faf8f5] to-white rounded-xl border border-[#e7dbc2]/40">
+                <h4 className="text-base font-semibold bg-gradient-to-r from-[#c9a962] to-[#b8954d] bg-clip-text text-transparent mb-4 text-center">
                   Historia Clínica Estética
                 </h4>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-semibold text-[#4a4a4a] mb-1">Sexo</label>
                     <select value={formData.sexo} onChange={e => setFormData({ ...formData, sexo: e.target.value })}
+                       aria-label="Sexo"
                        className="w-full px-3 py-2 rounded-lg border-2 border-[#c9a962]/20 focus:border-[#c9a962] outline-none bg-white/70 text-sm text-[#2a2a2a]">
                       <option value="">Selecciona</option>
                       <option value="Femenino">Femenino</option>
@@ -176,6 +177,7 @@ export default function Contact() {
                   <div>
                     <label className="block text-xs font-semibold text-[#4a4a4a] mb-1">Fecha Nacimiento</label>
                     <input type="date" value={formData.nacimiento} onChange={e => setFormData({ ...formData, nacimiento: e.target.value })}
+                        aria-label="Fecha de nacimiento" placeholder="dd/mm/aaaa"
                         className="w-full px-3 py-2 rounded-lg border-2 border-[#c9a962]/20 focus:border-[#c9a962] outline-none bg-white/70 text-sm text-[#2a2a2a]" />
                   </div>
                   <div>
@@ -191,11 +193,13 @@ export default function Contact() {
                   <div>
                     <label className="block text-xs font-semibold text-[#4a4a4a] mb-1">Edad</label>
                     <input type="number" min="0" value={formData.edad} onChange={e => setFormData({ ...formData, edad: e.target.value })}
+                        aria-label="Edad" placeholder="Tu edad"
                         className="w-full px-3 py-2 rounded-lg border-2 border-[#c9a962]/20 focus:border-[#c9a962] outline-none bg-white/70 text-sm text-[#2a2a2a]" />
                   </div>
                   <div>
                     <label className="block text-xs font-semibold text-[#4a4a4a] mb-1">Antecedentes</label>
                     <select value={formData.antecedentes} onChange={e => setFormData({ ...formData, antecedentes: e.target.value })}
+                        aria-label="Antecedentes médicos"
                         className="w-full px-3 py-2 rounded-lg border-2 border-[#c9a962]/20 focus:border-[#c9a962] outline-none bg-white/70 text-sm mb-2 text-[#2a2a2a]">
                       <option value="">Selecciona</option>
                       <option value="Ninguno">Ninguno</option>
@@ -212,6 +216,7 @@ export default function Contact() {
                   <div className="md:col-span-2">
                     <label className="block text-xs font-semibold text-[#4a4a4a] mb-1">Enfermedades piel</label>
                     <select value={formData.piel} onChange={e => setFormData({ ...formData, piel: e.target.value })}
+                        aria-label="Enfermedades de piel"
                         className="w-full px-3 py-2 rounded-lg border-2 border-[#c9a962]/20 focus:border-[#c9a962] outline-none bg-white/70 text-sm mb-2 text-[#2a2a2a]">
                       <option value="">Selecciona</option>
                       <option value="Ninguna">Ninguna</option>
@@ -228,31 +233,31 @@ export default function Contact() {
               </div>
 
               <button type="submit"
-                className="w-full py-4 bg-gradient-to-r from-[#d4b886] to-[#c9a962] text-white rounded-xl font-bold shadow-xl shadow-[#c9a962]/30 hover:shadow-2xl hover:shadow-[#c9a962]/40 hover:-translate-y-1 transition-all text-lg">
+                className="w-full py-3.5 bg-gradient-to-r from-[#c9a962] to-[#b8954d] text-white rounded-xl font-semibold shadow-md shadow-[#c9a962]/20 hover:shadow-lg hover:shadow-[#c9a962]/30 hover:-translate-y-0.5 transition-all text-base">
                 Enviar Mensaje
               </button>
             </form>
           </div>
 
           {/* Contact Info Desktop */}
-          <div className="hidden lg:block space-y-6">
+          <div className="hidden lg:block space-y-5">
             <div className="grid sm:grid-cols-2 gap-4">
               {contactInfo.map((item, idx) => (
-                <div key={idx} className="bg-white/80 backdrop-blur-lg rounded-2xl p-6 border border-[#c9a962]/20 hover:shadow-xl hover:-translate-y-1 transition-all">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#d4b886] to-[#c9a962] rounded-xl flex items-center justify-center text-white mb-4 shadow-lg">
+                <div key={idx} className="bg-white/90 backdrop-blur-sm rounded-2xl p-5 border border-[#e7dbc2]/30 hover:shadow-lg hover:-translate-y-0.5 transition-all">
+                  <div className="w-11 h-11 bg-gradient-to-br from-[#c9a962] to-[#b8954d] rounded-xl flex items-center justify-center text-white mb-3 shadow-md">
                     {item.icon}
                   </div>
-                  <h4 className="font-bold text-[#2a2a2a] mb-1">{item.title}</h4>
-                  <p className="text-[#c9a962] font-semibold text-sm">{item.info}</p>
-                  <p className="text-xs text-[#4a4a4a]">{item.detail}</p>
+                  <h4 className="font-semibold text-[#2a2a2a] mb-1 text-sm">{item.title}</h4>
+                  <p className="text-[#c9a962] font-medium text-sm">{item.info}</p>
+                  <p className="text-xs text-[#5a5a5a]">{item.detail}</p>
                 </div>
               ))}
             </div>
 
             {/* Map */}
-            <div className="bg-gradient-to-br from-[#c9a962]/10 to-[#d4b886]/20 rounded-2xl h-48 flex items-center justify-center backdrop-blur-sm border border-[#c9a962]/20">
+            <div className="bg-gradient-to-br from-[#c9a962]/10 to-[#d4b886]/10 rounded-2xl h-44 flex items-center justify-center border border-[#e7dbc2]/30">
               <div className="text-center">
-                <div className="w-16 h-16 mx-auto mb-3 bg-gradient-to-br from-[#d4b886] to-[#c9a962] rounded-full flex items-center justify-center shadow-xl">
+                <div className="w-14 h-14 mx-auto mb-3 bg-gradient-to-br from-[#c9a962] to-[#b8954d] rounded-full flex items-center justify-center shadow-md">
                   <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -264,10 +269,10 @@ export default function Contact() {
             </div>
 
             {/* Social */}
-            <div className="bg-white/80 backdrop-blur-lg rounded-2xl p-6 border border-[#c9a962]/20">
-              <h4 className="font-bold text-[#2a2a2a] mb-4">Síguenos</h4>
+            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-5 border border-[#e7dbc2]/30">
+              <h4 className="font-semibold text-[#2a2a2a] mb-3 text-sm">Síguenos</h4>
               <div className="flex gap-3">
-                <a href="https://www.instagram.com/dermobotanics" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-[#d4b886] to-[#c9a962] text-white shadow-lg hover:scale-110 transition">
+                <a href="https://www.instagram.com/dermobotanics" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-[#d4b886] to-[#c9a962] text-white shadow-lg hover:scale-110 transition">
                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                   </svg>
