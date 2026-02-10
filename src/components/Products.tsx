@@ -220,19 +220,15 @@ export default function Products() {
           ).map((product) => (
             <div
               key={product.id}
-              className="group relative bg-white rounded-xl md:rounded-2xl overflow-hidden transition-all duration-500 hover:-translate-y-1 md:hover:-translate-y-2 hover:shadow-xl border border-[#e7dbc2]/30 hover:border-[#c9a962]/30"
+              className="group relative bg-white rounded-xl md:rounded-2xl overflow-hidden transition-all duration-500 hover:-translate-y-1 md:hover:-translate-y-2 hover:shadow-xl border border-[#e7dbc2]/30 hover:border-[#c9a962]/30 cursor-pointer"
               style={{
                 boxShadow: '0 2px 12px rgba(201, 169, 98, 0.06)',
               }}
+              onClick={() => setSelectedProduct(product)}
             >
               {/* Product Image */}
               <div
-                className="relative h-36 sm:h-44 md:h-56 overflow-hidden bg-gradient-to-br from-[#faf8f5] to-[#f5f0e8] cursor-pointer"
-                onClick={() => {
-                  if (typeof product.image === 'string' && product.image) {
-                    setLightboxImage({ src: product.image, alt: product.name });
-                  }
-                }}
+                className="relative h-36 sm:h-44 md:h-56 overflow-hidden bg-gradient-to-br from-[#faf8f5] to-[#f5f0e8]"
               >
                 {typeof product.image === 'string' && product.image ? (
                   <>
@@ -245,7 +241,15 @@ export default function Products() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     {/* Icono de zoom */}
-                    <div className="absolute bottom-2 right-2 w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow">
+                    <div
+                      className="absolute bottom-2 right-2 w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow cursor-pointer hover:scale-110"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (typeof product.image === 'string' && product.image) {
+                          setLightboxImage({ src: product.image, alt: product.name });
+                        }
+                      }}
+                    >
                       <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-[#b8954d]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
                     </div>
                   </>
@@ -300,14 +304,21 @@ export default function Products() {
                     </span>
                   </div>
                   
+                  {/* Flecha en móvil, WhatsApp en desktop */}
+                  <div className="md:hidden w-8 h-8 rounded-full bg-gradient-to-r from-[#d4b886]/20 to-[#c9a962]/20 flex items-center justify-center">
+                    <svg className="w-4 h-4 text-[#c9a962]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
                   <a
                     href={`https://wa.me/593987901837?text=Hola%20👋%20Me%20interesa%20el%20producto:%20${encodeURIComponent(product.name)}%20-%20Precio:%20$${product.price}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`Pedir ${product.name} por WhatsApp`}
-                    className="p-2.5 md:p-3 rounded-xl bg-gradient-to-r from-[#128C7E] to-[#25D366] text-white hover:scale-105 transition-all duration-300 shadow-md"
+                    className="hidden md:flex p-3 rounded-xl bg-gradient-to-r from-[#128C7E] to-[#25D366] text-white hover:scale-105 transition-all duration-300 shadow-md"
+                    onClick={(e) => e.stopPropagation()}
                   >
-                    <svg className="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                     </svg>
                   </a>
@@ -415,6 +426,122 @@ export default function Products() {
           </div>
         </div>
       </div>
+
+      {/* Modal detalle del producto */}
+      {selectedProduct && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+          onClick={() => setSelectedProduct(null)}
+        >
+          <div
+            className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Botón cerrar */}
+            <button
+              className="absolute top-3 right-3 w-9 h-9 bg-white/90 rounded-full flex items-center justify-center shadow-md hover:bg-white transition z-20"
+              onClick={() => setSelectedProduct(null)}
+              aria-label="Cerrar"
+            >
+              <svg className="w-5 h-5 text-[#3a3a3a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Imagen del producto */}
+            {typeof selectedProduct.image === 'string' && selectedProduct.image ? (
+              <div
+                className="relative h-64 md:h-80 overflow-hidden rounded-t-2xl bg-gradient-to-br from-[#faf8f5] to-[#f5f0e8] cursor-pointer"
+                onClick={() => {
+                  setLightboxImage({ src: selectedProduct.image, alt: selectedProduct.name });
+                }}
+              >
+                <Image
+                  src={selectedProduct.image}
+                  alt={selectedProduct.name}
+                  width={600}
+                  height={400}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                {/* Zoom hint */}
+                <div className="absolute bottom-3 right-3 w-9 h-9 rounded-full bg-white/90 flex items-center justify-center shadow-md">
+                  <svg className="w-4 h-4 text-[#b8954d]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" /></svg>
+                </div>
+              </div>
+            ) : (
+              <div className="flex justify-center pt-8 pb-2">
+                <div className="w-24 h-24 bg-gradient-to-br from-[#f5ecd4] to-[#ebdab0] rounded-2xl flex items-center justify-center text-5xl shadow-lg">
+                  🛍️
+                </div>
+              </div>
+            )}
+
+            {/* Contenido */}
+            <div className="p-6 md:p-8">
+              {/* Badges */}
+              <div className="flex flex-wrap gap-2 mb-3">
+                {selectedProduct.promo && (
+                  <span className="px-3 py-1 bg-gradient-to-r from-pink-400 to-pink-500 text-white text-xs font-bold rounded-full">🎁 Promoción</span>
+                )}
+                {selectedProduct.marca && (
+                  <span
+                    className="px-3 py-1 text-xs font-bold rounded-full"
+                    style={{
+                      color: getBrandColor(selectedProduct.marca),
+                      backgroundColor: `${getBrandColor(selectedProduct.marca)}15`,
+                    }}
+                  >
+                    {selectedProduct.marca}
+                  </span>
+                )}
+                {selectedProduct.categoria && (
+                  <span className="px-3 py-1 bg-emerald-50 text-emerald-700 text-xs font-bold rounded-full">
+                    {categories.find((c) => normalize(c.name).includes(normalize(selectedProduct.categoria)))?.icon}{' '}
+                    {categories.find((c) => normalize(c.name).includes(normalize(selectedProduct.categoria)))?.name || selectedProduct.categoria}
+                  </span>
+                )}
+              </div>
+
+              <h2 className="text-2xl md:text-3xl font-bold text-[#2a2a2a] mb-3">
+                {selectedProduct.name}
+              </h2>
+
+              <div className="h-0.5 w-12 bg-gradient-to-r from-[#d4b886] to-[#c9a962] rounded-full mb-4"></div>
+
+              <p className="text-sm md:text-base text-[#5a5a5a] leading-relaxed mb-6">
+                {selectedProduct.description || 'Producto premium de alta calidad para el cuidado de tu piel.'}
+              </p>
+
+              {/* Separador */}
+              <div className="h-px bg-gradient-to-r from-transparent via-[#e7dbc2]/50 to-transparent mb-5"></div>
+
+              {/* Precio */}
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <span className="text-xs text-[#5a5a5a] font-medium uppercase tracking-wider">Precio</span>
+                  <div className="text-3xl font-bold bg-gradient-to-r from-[#c9a962] to-[#b8954d] bg-clip-text text-transparent">
+                    ${selectedProduct.price}
+                  </div>
+                </div>
+              </div>
+
+              {/* Botón pedir por WhatsApp */}
+              <a
+                href={`https://wa.me/593987901837?text=Hola%20👋%20Me%20interesa%20el%20producto:%20${encodeURIComponent(selectedProduct.name)}%20-%20Precio:%20$${selectedProduct.price}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-4 bg-gradient-to-r from-[#128C7E] to-[#25D366] text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-[#0e7a6e] hover:to-[#20c45e] transition-all duration-300 flex items-center justify-center gap-2 text-lg"
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                </svg>
+                Pedir por WhatsApp
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Lightbox - Imagen completa del producto */}
       {lightboxImage && (

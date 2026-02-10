@@ -115,13 +115,13 @@ export default function About() {
             {values.map((value, index) => (
               <div
                 key={index}
-                className="text-center p-4 md:p-6 rounded-2xl bg-[#faf8f5] hover:shadow-md hover:-translate-y-1 transition-all duration-300 border border-transparent hover:border-[#e7dbc2]/40"
+                className="text-center p-4 md:p-6 rounded-2xl bg-[#faf8f5] hover:shadow-md hover:-translate-y-1 transition-all duration-300 border border-transparent hover:border-[#e7dbc2]/40 flex flex-col items-center"
               >
-                <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4 rounded-full bg-gradient-to-br from-[#d4b886]/20 to-[#c9a962]/20 flex items-center justify-center text-2xl md:text-3xl text-[#c9a962] shadow-lg">
+                <div className="w-12 h-12 md:w-16 md:h-16 mb-3 md:mb-4 rounded-full bg-gradient-to-br from-[#d4b886]/20 to-[#c9a962]/20 flex items-center justify-center text-2xl md:text-3xl text-[#c9a962] shadow-lg flex-shrink-0">
                   {value.icon}
                 </div>
                 <h4 className="font-bold text-[#4a4a4a] mb-1 md:mb-2 text-sm md:text-base">{value.title}</h4>
-                <p className="text-xs md:text-sm text-[#5a5a5a]">{value.description}</p>
+                <p className="text-xs md:text-sm text-[#5a5a5a] flex-grow">{value.description}</p>
               </div>
             ))}
           </div>
