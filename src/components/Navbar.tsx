@@ -110,11 +110,20 @@ export default function Navbar() {
         >
           <div className="bg-white/95 backdrop-blur-2xl rounded-2xl p-5 space-y-1 shadow-2xl shadow-black/10 border border-[#e7dbc2]/40">
             {navLinks.map((link, index) => (
-              <Link
+              <a
                 key={link.name}
                 href={link.href}
                 className="block py-3.5 px-5 text-[#4a4a4a] hover:text-[#c9a962] hover:bg-gradient-to-r hover:from-[#faf6ed] hover:to-[#f5ecd4] rounded-2xl transition-all duration-300 font-medium group"
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsMobileMenuOpen(false);
+                  const target = document.querySelector(link.href);
+                  if (target) {
+                    setTimeout(() => {
+                      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 300);
+                  }
+                }}
                 style={{ 
                   animation: isMobileMenuOpen ? `slideIn 0.3s ease-out ${index * 0.1}s both` : 'none'
                 }}
@@ -125,7 +134,7 @@ export default function Navbar() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </span>
-              </Link>
+              </a>
             ))}
             
             {/* Divider dorado */}
