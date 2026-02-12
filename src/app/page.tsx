@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import GoldParticles from "@/components/GoldParticles";
@@ -9,6 +12,14 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
 export default function Home() {
+  useEffect(() => {
+    // Al cargar la página, scroll al inicio y limpiar hash
+    if (window.location.hash) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
       <Navbar />

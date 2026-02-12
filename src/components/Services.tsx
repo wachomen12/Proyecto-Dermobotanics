@@ -34,15 +34,13 @@ export default function Services() {
   }, []);
 
   const handleReservar = (serviceName: string) => {
-    // Primero hacer scroll al contacto, luego cambiar el hash para que el listener lo capture
-    const contacto = document.getElementById('contacto');
-    if (contacto) {
-      contacto.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    // Dar tiempo al scroll y luego setear el hash para que Contact lo detecte
+    window.location.hash = `contacto?servicio=${encodeURIComponent(serviceName)}`;
     setTimeout(() => {
-      window.location.hash = `contacto?servicio=${encodeURIComponent(serviceName)}`;
-    }, 500);
+      const contacto = document.getElementById('contacto');
+      if (contacto) {
+        contacto.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
   };
 
   const filteredServices = services.filter(service => {
@@ -412,11 +410,9 @@ export default function Services() {
             {/* Imagen del servicio */}
             {selectedService.image && (
               <div className="relative h-56 md:h-72 overflow-hidden rounded-t-2xl bg-gradient-to-br from-[#faf8f5] to-[#f5f0e8]">
-                <Image
+                <img
                   src={selectedService.image}
                   alt={selectedService.title}
-                  width={600}
-                  height={400}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
@@ -482,9 +478,7 @@ export default function Services() {
                 onClick={() => {
                   const title = selectedService.title;
                   setSelectedService(null);
-                  setTimeout(() => {
-                    handleReservar(title);
-                  }, 400);
+                  handleReservar(title);
                 }}
                 className="w-full py-4 bg-gradient-to-r from-[#d4b886] to-[#c9a962] text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-[#c9a962] hover:to-[#b8954d] transition-all duration-300 flex items-center justify-center gap-2 text-lg"
               >
