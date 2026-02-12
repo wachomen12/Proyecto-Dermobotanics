@@ -483,7 +483,11 @@ export default function Services() {
 
               {/* Botón Reservar */}
               <button
-                onClick={() => { setSelectedService(null); handleReservar(selectedService.title); }}
+                onClick={() => {
+                  const title = selectedService.title;
+                  setSelectedService(null);
+                  setTimeout(() => handleReservar(title), 350);
+                }}
                 className="w-full py-4 bg-gradient-to-r from-[#d4b886] to-[#c9a962] text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-[#c9a962] hover:to-[#b8954d] transition-all duration-300 flex items-center justify-center gap-2 text-lg"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
