@@ -476,9 +476,8 @@ export default function Services() {
               {/* Botón Reservar */}
               <button
                 onClick={() => {
-                  const title = selectedService.title;
-                  setSelectedService(null);
-                  handleReservar(title);
+                  handleReservar(selectedService.title);
+                  setTimeout(() => setSelectedService(null), 300);
                 }}
                 className="w-full py-4 bg-gradient-to-r from-[#d4b886] to-[#c9a962] text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-[#c9a962] hover:to-[#b8954d] transition-all duration-300 flex items-center justify-center gap-2 text-lg"
               >

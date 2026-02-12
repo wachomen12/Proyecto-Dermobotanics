@@ -523,8 +523,8 @@ export default function Products() {
               <button
                 onClick={() => {
                   const url = `https://wa.me/593987901837?text=Hola%20%F0%9F%91%8B%20Me%20interesa%20el%20producto:%20${encodeURIComponent(selectedProduct.name)}%20-%20Precio:%20$${selectedProduct.price}`;
-                  setSelectedProduct(null);
                   window.open(url, '_blank');
+                  setTimeout(() => setSelectedProduct(null), 300);
                 }}
                 className="w-full py-4 bg-gradient-to-r from-[#128C7E] to-[#25D366] text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-[#0e7a6e] hover:to-[#20c45e] transition-all duration-300 flex items-center justify-center gap-2 text-lg"
               >
