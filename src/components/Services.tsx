@@ -34,19 +34,15 @@ export default function Services() {
   }, []);
 
   const handleReservar = (serviceName: string) => {
-    window.location.hash = `contacto?servicio=${encodeURIComponent(serviceName)}`;
+    // Primero hacer scroll al contacto, luego cambiar el hash para que el listener lo capture
+    const contacto = document.getElementById('contacto');
+    if (contacto) {
+      contacto.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    // Dar tiempo al scroll y luego setear el hash para que Contact lo detecte
     setTimeout(() => {
-      const formulario = document.getElementById('formulario-contacto');
-      if (formulario) {
-        const elementRect = formulario.getBoundingClientRect();
-        const absoluteElementTop = elementRect.top + window.pageYOffset;
-        const middle = absoluteElementTop - (window.innerHeight / 2) + (elementRect.height / 2);
-        window.scrollTo({
-          top: middle,
-          behavior: 'smooth'
-        });
-      }
-    }, 100);
+      window.location.hash = `contacto?servicio=${encodeURIComponent(serviceName)}`;
+    }, 500);
   };
 
   const filteredServices = services.filter(service => {
@@ -486,7 +482,9 @@ export default function Services() {
                 onClick={() => {
                   const title = selectedService.title;
                   setSelectedService(null);
-                  setTimeout(() => handleReservar(title), 350);
+                  setTimeout(() => {
+                    handleReservar(title);
+                  }, 400);
                 }}
                 className="w-full py-4 bg-gradient-to-r from-[#d4b886] to-[#c9a962] text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-[#c9a962] hover:to-[#b8954d] transition-all duration-300 flex items-center justify-center gap-2 text-lg"
               >
