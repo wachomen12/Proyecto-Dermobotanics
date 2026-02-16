@@ -222,7 +222,7 @@ export default function Services() {
                     {/* Separador */}
                     <div className="h-px bg-gradient-to-r from-transparent via-[#e7dbc2]/50 to-transparent my-2 md:my-4"></div>
 
-                    {/* Price & CTA */}
+                    {/* Price */}
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex flex-col">
                         <span className="text-[9px] md:text-[10px] text-[#5a5a5a] font-medium mb-0.5 uppercase tracking-wider">Desde</span>
@@ -231,16 +231,12 @@ export default function Services() {
                         </span>
                       </div>
                       
-                      {/* Botón Reservar - visible en móvil y desktop */}
-                      <button
-                        onClick={(e) => { e.stopPropagation(); handleReservar(service.title); }}
-                        className="group/btn relative flex items-center gap-1 md:gap-2 px-3 py-2 md:px-6 md:py-3 bg-gradient-to-r from-[#d4b886] to-[#c9a962] text-white font-bold rounded-lg md:rounded-xl shadow-md md:shadow-lg hover:shadow-xl hover:from-[#c9a962] hover:to-[#b8954d] transition-all duration-300 overflow-hidden hover:scale-105 text-[10px] md:text-sm"
-                      >
-                        <svg className="w-3 h-3 md:w-4 md:h-4 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      {/* Indicador de ver más */}
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-r from-[#d4b886] to-[#c9a962] flex items-center justify-center text-white shadow-md">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
-                        <span className="relative z-10">Reservar</span>
-                      </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -473,13 +469,13 @@ export default function Services() {
                 </div>
               </div>
 
-              {/* Botón Reservar */}
+              {/* Botón Reservar - solo visible en desktop */}
               <button
                 onClick={() => {
                   handleReservar(selectedService.title);
                   setTimeout(() => setSelectedService(null), 300);
                 }}
-                className="w-full py-4 bg-gradient-to-r from-[#d4b886] to-[#c9a962] text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-[#c9a962] hover:to-[#b8954d] transition-all duration-300 flex items-center justify-center gap-2 text-lg"
+                className="w-full py-4 bg-gradient-to-r from-[#d4b886] to-[#c9a962] text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:from-[#c9a962] hover:to-[#b8954d] transition-all duration-300 hidden md:flex items-center justify-center gap-2 text-lg"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
