@@ -228,7 +228,7 @@ export default function AdminPanel() {
     try {
       let res;
       if (editServiceIndex !== null && services[editServiceIndex]?.id) {
-        // UPDATE (PUT) servicio existente
+        // UPDATE (PUT) servicio existente - mantener el orden
         res = await fetch("/api/services", {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -242,11 +242,12 @@ export default function AdminPanel() {
             image: imgSrc,
             icon: imgSrc ? "" : icon,
             popular: service.popular,
-            promo: service.promo
+            promo: service.promo,
+            orden: services[editServiceIndex].orden || editServiceIndex
           }),
         });
       } else {
-        // CREAR (POST) servicio nuevo
+        // CREAR (POST) servicio nuevo - asignar orden al final
         res = await fetch("/api/services", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -259,7 +260,8 @@ export default function AdminPanel() {
             image: imgSrc,
             icon: imgSrc ? "" : icon,
             popular: service.popular,
-            promo: service.promo
+            promo: service.promo,
+            orden: services.length
           }),
         });
       }
@@ -572,6 +574,70 @@ export default function AdminPanel() {
       if (!response.ok) throw new Error('Error al actualizar');
       
       setProducts(newProducts);
+      showNotification("✅ Orden actualizado", "success");
+    } catch (error) {
+      showNotification("❌ Error al actualizar orden", "error");
+      console.error(error);
+    }
+    setLoading(false);
+  };
+
+  const moveServiceUp = async (index: number) => {
+    if (index === 0) return;
+    setLoading(true);
+    const newServices = [...services];
+    [newServices[index], newServices[index - 1]] = [newServices[index - 1], newServices[index]];
+    
+    try {
+      // Reasignar órdenes secuenciales a TODOS los servicios
+      const updatePromises = newServices.map((srv, idx) =>
+        fetch("/api/services", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: srv.id,
+            orden: idx
+          })
+        })
+      );
+      
+      await Promise.all(updatePromises);
+      
+      // Refrescar lista desde servidor
+      const updated = await fetch("/api/services").then(r => r.json());
+      setServices(updated);
+      showNotification("✅ Orden actualizado", "success");
+    } catch (error) {
+      showNotification("❌ Error al actualizar orden", "error");
+      console.error(error);
+    }
+    setLoading(false);
+  };
+
+  const moveServiceDown = async (index: number) => {
+    if (index === services.length - 1) return;
+    setLoading(true);
+    const newServices = [...services];
+    [newServices[index], newServices[index + 1]] = [newServices[index + 1], newServices[index]];
+    
+    try {
+      // Reasignar órdenes secuenciales a TODOS los servicios
+      const updatePromises = newServices.map((srv, idx) =>
+        fetch("/api/services", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: srv.id,
+            orden: idx
+          })
+        })
+      );
+      
+      await Promise.all(updatePromises);
+      
+      // Refrescar lista desde servidor
+      const updated = await fetch("/api/services").then(r => r.json());
+      setServices(updated);
       showNotification("✅ Orden actualizado", "success");
     } catch (error) {
       showNotification("❌ Error al actualizar orden", "error");
@@ -1149,7 +1215,44 @@ export default function AdminPanel() {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {services.map((srv, idx) => (
-                    <div key={idx} className="group bg-gradient-to-br from-slate-50 to-white rounded-xl border-2 border-slate-200 overflow-hidden hover:shadow-xl hover:border-amber-300 transition-all">
+                    <div key={idx} className="group relative bg-gradient-to-br from-slate-50 to-white rounded-xl border-2 border-slate-200 overflow-hidden hover:shadow-xl hover:border-amber-300 transition-all">
+                      
+                      {/* Badge de posición */}
+                      <div className="absolute top-3 left-3 z-10">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-white font-bold flex items-center justify-center text-sm shadow-xl border-2 border-white">
+                          #{idx + 1}
+                        </div>
+                      </div>
+
+                      {/* Botones de ordenamiento */}
+                      <div className="absolute top-3 right-3 z-10 flex flex-col gap-2">
+                        <button
+                          onClick={() => moveServiceUp(idx)}
+                          disabled={idx === 0 || loading}
+                          className={`p-2.5 rounded-xl bg-white/95 backdrop-blur-sm shadow-xl transition-all border-2 ${
+                            idx === 0 
+                              ? 'opacity-30 cursor-not-allowed border-slate-200' 
+                              : 'hover:bg-amber-500 hover:text-white hover:scale-110 hover:shadow-2xl border-amber-200 hover:border-amber-400'
+                          }`}
+                          title="Subir posición"
+                        >
+                          <ArrowUp className="w-5 h-5" strokeWidth={3} />
+                        </button>
+                        
+                        <button
+                          onClick={() => moveServiceDown(idx)}
+                          disabled={idx === services.length - 1 || loading}
+                          className={`p-2.5 rounded-xl bg-white/95 backdrop-blur-sm shadow-xl transition-all border-2 ${
+                            idx === services.length - 1
+                              ? 'opacity-30 cursor-not-allowed border-slate-200'
+                              : 'hover:bg-amber-500 hover:text-white hover:scale-110 hover:shadow-2xl border-amber-200 hover:border-amber-400'
+                          }`}
+                          title="Bajar posición"
+                        >
+                          <ArrowDown className="w-5 h-5" strokeWidth={3} />
+                        </button>
+                      </div>
+
                       {/* Imagen/Emoji */}
                       {(srv.image || srv.icon) && (
                         <div className="relative h-40 bg-gradient-to-br from-amber-50 to-slate-100 flex items-center justify-center overflow-hidden">

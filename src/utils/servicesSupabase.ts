@@ -14,9 +14,10 @@ export async function addService(service: any) {
 export async function getAllServices() {
   const { data, error } = await supabase
     .from(SERVICES_TABLE)
-    .select('*');
+    .select('*')
+    .order('orden', { ascending: true });
   if (error) throw error;
-  return data;
+  return data || [];
 }
 
 export async function deleteService(id: string) {
@@ -33,4 +34,14 @@ export async function updateService(id: string, data: any) {
     .update(data)
     .eq('id', id);
   if (error) throw error;
+}
+
+export async function reorderServices(updates: { id: string; orden: number }[]) {
+  const updatesPromises = updates.map(update =>
+    supabase.from(SERVICES_TABLE).update({ orden: update.orden }).eq('id', update.id)
+  );
+  const results = await Promise.all(updatesPromises);
+  const errors = results.filter(r => r.error);
+  if (errors.length) throw errors[0].error;
+  return await getAllServices();
 }
