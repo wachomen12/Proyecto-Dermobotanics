@@ -46,7 +46,7 @@ export default function AdminPanel() {
   const [editServiceIndex, setEditServiceIndex] = useState<number | null>(null);
 
   // --- Estados de Productos ---
-  const marcas = ["Bassa", "Natú", "Amorenature", "Natural Center"];
+  const marcas = ["Otro", "Natú", "Amorenature", "Natural Center"];
   const categorias = ["Cuidado Facial", "Cuidado Corporal", "Cuidado Capilar", "Suplementos"];
   const [preview, setPreview] = useState<string | null>(null);
   const [product, setProduct] = useState({
@@ -60,6 +60,9 @@ export default function AdminPanel() {
   });
   const [products, setProducts] = useState<Array<{ id?: string; name: string; description: string; price: string; marca: string; categoria: string; image: string | null; promo?: boolean; orden?: number }>>([]);
   const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [productSearch, setProductSearch] = useState("");
+
+  const normalizeMarcaDisplay = (marca?: string) => (marca === "Bassa" ? "Otro" : marca || "");
 
   // Cargar credenciales
   useEffect(() => {
@@ -468,7 +471,7 @@ export default function AdminPanel() {
       name: prod.name,
       description: prod.description,
       price: prod.price,
-      marca: prod.marca,
+      marca: normalizeMarcaDisplay(prod.marca),
       categoria: prod.categoria,
       image: null,
       promo: prod.promo || false,
@@ -784,6 +787,26 @@ export default function AdminPanel() {
       </div>
     );
   }
+
+  const normalizedProductSearch = productSearch.trim().toLowerCase();
+  const filteredProducts = products
+    .map((prod, idx) => ({ prod, idx }))
+    .filter(({ prod }) => {
+      if (!normalizedProductSearch) return true;
+
+      const searchableText = [
+        prod.name,
+        prod.description,
+        prod.marca,
+        normalizeMarcaDisplay(prod.marca),
+        prod.categoria,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+      return searchableText.includes(normalizedProductSearch);
+    });
 
   // ==========================================
   // PANEL PRINCIPAL (después del login)
@@ -1419,9 +1442,26 @@ export default function AdminPanel() {
                 </div>
                 <div>
                   <h2 className="text-xl font-bold text-slate-800">Productos Registrados</h2>
-                  <p className="text-slate-600 text-sm">{products.length} producto{products.length !== 1 ? 's' : ''} en total</p>
+                  <p className="text-slate-600 text-sm">
+                    {products.length} producto{products.length !== 1 ? 's' : ''} en total
+                    {normalizedProductSearch && (
+                      <span className="ml-2 text-emerald-700 font-medium">• {filteredProducts.length} resultado{filteredProducts.length !== 1 ? 's' : ''}</span>
+                    )}
+                  </p>
                 </div>
               </div>
+
+              {products.length > 0 && (
+                <div className="mb-6">
+                  <input
+                    type="text"
+                    value={productSearch}
+                    onChange={(e) => setProductSearch(e.target.value)}
+                    placeholder="Buscar por nombre, marca, categoría o descripción..."
+                    className="w-full border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800 bg-white"
+                  />
+                </div>
+              )}
               
               {products.length === 0 ? (
                 <div className="text-center py-16">
@@ -1431,10 +1471,18 @@ export default function AdminPanel() {
                   <p className="text-slate-600 font-medium text-lg">No hay productos aún</p>
                   <p className="text-slate-500 text-sm mt-1">Agrega tu primer producto usando el formulario de arriba</p>
                 </div>
+              ) : filteredProducts.length === 0 ? (
+                <div className="text-center py-16">
+                  <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Package className="w-10 h-10 text-slate-400" />
+                  </div>
+                  <p className="text-slate-600 font-medium text-lg">No se encontraron productos</p>
+                  <p className="text-slate-500 text-sm mt-1">Prueba con otro término de búsqueda</p>
+                </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {products.map((prod, idx) => (
-                    <div key={idx} className="group relative bg-gradient-to-br from-slate-50 to-white rounded-xl border-2 border-slate-200 overflow-hidden hover:shadow-xl hover:border-emerald-300 transition-all">
+                  {filteredProducts.map(({ prod, idx }) => (
+                    <div key={prod.id || idx} className="group relative bg-gradient-to-br from-slate-50 to-white rounded-xl border-2 border-slate-200 overflow-hidden hover:shadow-xl hover:border-emerald-300 transition-all">
                       
                       {/* Badge de posición */}
                       <div className="absolute top-3 left-3 z-10">
@@ -1485,8 +1533,8 @@ export default function AdminPanel() {
                         <div className="mb-2">
                           <span className="block text-xs font-bold bg-amber-100 text-amber-700 rounded-full px-3 py-1 mb-1">{prod.categoria}</span>
                           {/* Mostrar marca debajo de la categoría si es una de las 4 */}
-                          {['Natu', 'Bassa', 'Amorenature', 'Natural Center'].includes(prod.marca) && (
-                            <span className="block text-xs font-bold bg-emerald-100 text-emerald-700 rounded-full px-3 py-1 mt-1">{prod.marca}</span>
+                          {['Natu', 'Bassa', 'Otro', 'Amorenature', 'Natural Center'].includes(prod.marca) && (
+                            <span className="block text-xs font-bold bg-emerald-100 text-emerald-700 rounded-full px-3 py-1 mt-1">{normalizeMarcaDisplay(prod.marca)}</span>
                           )}
                         </div>
                         <div className="space-y-2 mb-4">
@@ -1494,7 +1542,7 @@ export default function AdminPanel() {
                             <span className="text-2xl font-bold text-emerald-600">${prod.price}</span>
                           </div>
                           <div className="flex items-center gap-2 text-xs flex-wrap">
-                            {prod.promo && (
+                             {prod.promo && (
                               <span className="px-3 py-1 bg-pink-100 text-pink-700 rounded-full font-medium flex items-center gap-1">
                                 🎁 Promoción
                               </span>

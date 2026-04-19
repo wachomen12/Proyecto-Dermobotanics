@@ -23,9 +23,9 @@ const values = [
 
 const marcas = [
   {
-    nombre: "Bassa",
+    nombre: "Otro",
     imagen: "🧴",
-    descripcion: "Cuidado profesional de la piel con fórmulas avanzadas",
+    descripcion: "Productos seleccionados para complementar el cuidado de la piel",
     categorias: ["Facial", "Profesional", "Tratamientos"],
     color: "#2d5a3d",
   },

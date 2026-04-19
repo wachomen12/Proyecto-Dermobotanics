@@ -8,7 +8,7 @@ const brands = [
   { id: "natu", name: "Natú", description: "100% naturales", color: "#c9a962" },
   { id: "amorenature", name: "Amorenature", description: "Rutinas completas", color: "#b8954d" },
   { id: "naturalcenter", name: "Natural Center", description: "Cosmetología natural", color: "#c9a962", icon: "🕊️" },
-  { id: "bassa", name: "Bassa", description: "Dermocosmética profesional", color: "#d4b886" },
+  { id: "otro", name: "Otro", description: "Productos seleccionados", color: "#d4b886", icon: "🧴" },
 ];
 
 // Categorías de productos
@@ -47,12 +47,22 @@ export default function Products() {
       .replace(/[\u0300-\u036f]/g, "");
   }
 
+  function normalizeBrand(str: string | undefined | null) {
+    const value = normalize(str);
+    if (value === "bassa") return "otro";
+    return value;
+  }
+
+  function getDisplayBrand(marca: string) {
+    return normalizeBrand(marca) === "otro" ? "Otro" : marca;
+  }
+
   const filteredProducts = products.filter((product) => {
     // Buscar el nombre visible de la marca seleccionada
     const selectedBrand = brands.find((b) => b.id === activeBrand)?.name || "";
     const brandMatch =
       activeBrand === "todas" ||
-      (product.marca && normalize(product.marca) === normalize(selectedBrand));
+      (product.marca && normalizeBrand(product.marca) === normalizeBrand(selectedBrand));
     const categoryMatch =
       activeCategory === "todos" ||
       (product.categoria &&
@@ -64,7 +74,7 @@ export default function Products() {
 
   const getBrandColor = (marca: string) => {
     // Busca el color de la marca usando el nombre normalizado
-    const brand = brands.find((b) => normalize(b.name) === normalize(marca));
+    const brand = brands.find((b) => normalizeBrand(b.name) === normalizeBrand(marca));
     return brand?.color || "#c9a962";
   };
 
@@ -103,7 +113,7 @@ export default function Products() {
         </div>
 
         {/* Cards de Marcas compactas */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 mb-10">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-5 mb-10">
           {/* Natú */}
           <div className="text-center p-4 md:p-5 rounded-2xl bg-[#faf8f5] hover:shadow-md hover:-translate-y-1 transition-all duration-300 border border-transparent hover:border-[#e7dbc2]/40">
             <div className="w-12 h-12 md:w-14 md:h-14 mx-auto mb-3 rounded-full bg-gradient-to-br from-[#d4b886]/20 to-[#c9a962]/20 flex items-center justify-center text-2xl md:text-3xl shadow-md">
@@ -127,14 +137,6 @@ export default function Products() {
             </div>
             <h4 className="font-bold text-[#4a4a4a] mb-1 text-sm md:text-base">Natural Center</h4>
             <p className="text-xs md:text-sm text-[#5a5a5a] leading-relaxed">Cosmetología natural avanzada en la comodidad de tu hogar.</p>
-          </div>
-          {/* Bassa */}
-          <div className="text-center p-4 md:p-5 rounded-2xl bg-[#faf8f5] hover:shadow-md hover:-translate-y-1 transition-all duration-300 border border-transparent hover:border-[#e7dbc2]/40">
-            <div className="w-12 h-12 md:w-14 md:h-14 mx-auto mb-3 rounded-full bg-gradient-to-br from-[#d4b886]/20 to-[#c9a962]/20 flex items-center justify-center text-2xl md:text-3xl shadow-md">
-              🧴
-            </div>
-            <h4 className="font-bold text-[#4a4a4a] mb-1 text-sm md:text-base">Bassa</h4>
-            <p className="text-xs md:text-sm text-[#5a5a5a] leading-relaxed">Dermocosmética profesional basada en ciencia y activos de alta eficacia.</p>
           </div>
         </div>
 
@@ -277,7 +279,7 @@ export default function Products() {
                   </span>
                   {product.marca && (
                     <span className="text-[10px] md:text-xs font-bold bg-emerald-100 text-emerald-700 rounded-full px-2 md:px-3 py-0.5 md:py-1">
-                      {product.marca}
+                      {getDisplayBrand(product.marca)}
                     </span>
                   )}
                 </div>
@@ -492,7 +494,7 @@ export default function Products() {
                       backgroundColor: `${getBrandColor(selectedProduct.marca)}15`,
                     }}
                   >
-                    {selectedProduct.marca}
+                    {getDisplayBrand(selectedProduct.marca)}
                   </span>
                 )}
                 {selectedProduct.categoria && (
