@@ -316,7 +316,7 @@ export default function Products() {
 
                 {/* Botón Pedir por WhatsApp en cada tarjeta */}
                 <a
-                  href={`https://wa.me/593987901837?text=${encodeURIComponent(`Hola 👋 Me interesa el producto: ${product.name} - Precio: $${product.price}`)}`}
+                  href={`https://wa.me/593959602727?text=${encodeURIComponent(`Hola 👋 Me interesa el producto: ${product.name} - Precio: $${product.price}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
@@ -365,7 +365,7 @@ export default function Products() {
               Próximamente agregaremos productos en esta categoría
             </p>
             <a
-              href="https://wa.me/593987901837"
+              href="https://wa.me/593959602727"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#d4b886] to-[#c9a962] text-white rounded-full font-semibold hover:shadow-xl hover:shadow-[#c9a962]/30 transition-all"
@@ -395,7 +395,7 @@ export default function Products() {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
-                  href="https://wa.me/593987901837?text=Hola%20👋%20Quisiera%20asesoría%20sobre%20productos"
+                  href="https://wa.me/593959602727?text=Hola%20👋%20Quisiera%20asesoría%20sobre%20productos"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-[#128C7E] to-[#25D366] text-white rounded-full font-semibold shadow-xl shadow-green-500/30 hover:shadow-2xl hover:shadow-green-500/40 hover:-translate-y-1 transition-all duration-300"

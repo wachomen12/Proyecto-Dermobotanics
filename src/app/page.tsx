@@ -36,7 +36,7 @@ export default function Home() {
       
       {/* Botón flotante de WhatsApp */}
       <a
-        href="https://wa.me/593987901837?text=Hola%20%F0%9F%91%8B%20Me%20gustar%C3%ADa%20obtener%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20servicios"
+        href="https://wa.me/593959602727?text=Hola%20%F0%9F%91%8B%20Me%20gustar%C3%ADa%20obtener%20m%C3%A1s%20informaci%C3%B3n%20sobre%20sus%20servicios"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-lg hover:bg-[#128C7E] transition-all hover:scale-110"
